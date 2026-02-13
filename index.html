@@ -1,114 +1,106 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Anuka ❤️</title>
+<title>For My Beautiful Anuka ❤️</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-body{
+*{
 margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
 font-family:'Poppins',sans-serif;
-background:linear-gradient(180deg,#120018,#2b0033,#14001f);
+background:linear-gradient(135deg,#120012,#2a002a,#000);
 color:white;
-text-align:center;
 overflow-x:hidden;
-scroll-behavior:smooth;
 }
 
-.section{
+section{
 padding:60px 20px;
+text-align:center;
 }
 
-h1,h2{
-font-family:'Great Vibes',cursive;
+h1{
+font-family:'Dancing Script',cursive;
+font-size:40px;
 color:#ff4da6;
-text-shadow:0 0 20px #ff0080;
+margin-bottom:15px;
+text-shadow:0 0 20px #ff1493;
 }
 
-.counter{
+h2{
+color:#ff66cc;
+margin-bottom:20px;
+}
+
+.timer{
+margin-top:10px;
 font-size:16px;
-margin-top:15px;
-line-height:1.8;
 }
 
-.photo img{
-width:90%;
-max-width:350px;
+.card{
+background:rgba(255,255,255,0.08);
+padding:25px;
 border-radius:20px;
-box-shadow:0 0 30px #ff0080;
-animation:zoom 6s infinite alternate;
+max-width:500px;
+margin:20px auto;
+box-shadow:0 0 25px #ff1493;
 }
 
-@keyframes zoom{
-from{transform:scale(1);}
-to{transform:scale(1.05);}
+img{
+width:100%;
+border-radius:15px;
+margin-top:15px;
 }
 
 button{
-padding:12px 22px;
+background:#ff1493;
 border:none;
-border-radius:30px;
-background:linear-gradient(45deg,#ff0080,#ff4da6);
 color:white;
-margin:8px;
+padding:12px 25px;
+border-radius:25px;
+margin:10px;
+font-size:15px;
 cursor:pointer;
 transition:0.3s;
 }
 
-button:hover{transform:scale(1.1);}
-
-.game-area{
-position:relative;
-height:170px;
+button:hover{
+transform:scale(1.1);
 }
 
-#noBtn{
-position:absolute;
-left:60%;
-top:50px;
-}
-
-#response{
+.video-container{
 margin-top:20px;
-min-height:40px;
-color:#ff4da6;
 }
 
-.love-meter{
-width:85%;
-max-width:300px;
-height:20px;
-background:#222;
-margin:20px auto;
-border-radius:20px;
-overflow:hidden;
+video{
+width:100%;
+border-radius:15px;
+box-shadow:0 0 25px #ff1493;
 }
 
-.fill{
-height:100%;
-width:0%;
-background:linear-gradient(90deg,#ff0080,#ff4da6);
-transition:1s;
+.hidden{
+display:none;
 }
 
+/* floating hearts */
 .heart{
 position:fixed;
-bottom:-20px;
-animation:floatUp 6s linear infinite;
-pointer-events:none;
+bottom:-10px;
+font-size:20px;
+animation:float 6s linear infinite;
+opacity:0.7;
 }
 
-@keyframes floatUp{
-0%{transform:translateY(0);opacity:1;}
-100%{transform:translateY(-100vh);opacity:0;}
-}
-
-#heartGame{
-font-size:30px;
-cursor:pointer;
+@keyframes float{
+0%{transform:translateY(0);}
+100%{transform:translateY(-100vh);}
 }
 
 </style>
@@ -116,133 +108,119 @@ cursor:pointer;
 
 <body>
 
-<div class="section">
-
-<h1>For My Beautiful Anuka ❤️</h1>
-
-<h2>Since We Became Us 💍</h2>
-
-<div class="counter" id="counter"></div>
-
-<div class="photo">
-<img src="IMG_0668_Original.jpeg">
-</div>
-
-<button onclick="playMusic()">Play Our Song 🎵</button>
-<audio id="music" loop>
+<!-- 🎵 Background Music -->
+<audio id="bgMusic" autoplay loop>
 <source src="romantic.mp3.mp3" type="audio/mp3">
 </audio>
 
+<section>
+<h1>For My Beautiful Anuka ❤️</h1>
+<p>Since 11 July 2024, 4:50 PM</p>
+<div class="timer" id="timer"></div>
+</section>
+
+<section>
+<div class="card">
+<h2>Our Memory 💕</h2>
+<img src="IMG_0067_Original.jpeg">
 </div>
+</section>
 
-<div class="section">
-
-<h2>Will You Be My Valentine? 😏</h2>
-
-<div class="game-area">
-<button id="yesBtn" onclick="yesLove()">Yes ❤️</button>
-<button id="noBtn" onclick="noLove()">No 😒</button>
+<section>
+<div class="card">
+<h2>A Letter For You 💌</h2>
+<p>
+My love, since the day we became us, everything changed.  
+You became my peace, my smile, my comfort place.  
+No matter what happens in life, I will always choose you.  
+Every single day. Forever. ❤️
+</p>
 </div>
+</section>
 
-<div id="response"></div>
-
+<section>
+<div class="card">
+<h2>Mini Love Game 🎮</h2>
+<p>Tap the button to send me love 😘</p>
+<button onclick="increaseLove()">Send Love 💖</button>
+<p id="loveCount">Love Sent: 0</p>
 </div>
+</section>
 
-<div class="section">
-
-<h2>Love Meter 💘</h2>
-
-<div class="love-meter">
-<div class="fill" id="fill"></div>
+<section>
+<div class="card">
+<h2>Will You Be My Valentine? 💍</h2>
+<button onclick="yesClicked()">YES ❤️</button>
+<button id="noBtn" onclick="moveNo()">NO 😜</button>
+<p id="proposalText"></p>
 </div>
+</section>
 
-<button onclick="increaseLove()">Increase Love 💖</button>
-
+<section>
+<div class="card">
+<h2>You Are My Forever 💞</h2>
+<div class="video-container">
+<video autoplay muted loop playsinline>
+<source src="HER.mp4.mov" type="video/mp4">
+</video>
 </div>
-
-<div class="section">
-
-<h2>Mini Game – Tap The Heart ❤️</h2>
-
-<div id="heartGame" onclick="heartScore()">❤️</div>
-<p>Score: <span id="score">0</span></p>
-
 </div>
+</section>
 
 <script>
 
-/* TIME COUNTER */
-const startDate = new Date("July 11, 2024 16:50:00");
+/* 🎵 Fix autoplay on mobile */
+document.addEventListener("click", function(){
+document.getElementById("bgMusic").play();
+});
+
+/* ⏳ Timer */
+const startDate = new Date("July 11, 2024 16:50:00").getTime();
 
 setInterval(()=>{
-let now = new Date();
-let diff = now - startDate;
+const now = new Date().getTime();
+const diff = now - startDate;
 
-let days = Math.floor(diff / (1000*60*60*24));
-let hours = Math.floor((diff / (1000*60*60)) % 24);
-let mins = Math.floor((diff / (1000*60)) % 60);
-let secs = Math.floor((diff / 1000) % 60);
+const days = Math.floor(diff / (1000*60*60*24));
+const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
+const secs = Math.floor((diff % (1000*60)) / 1000);
 
-document.getElementById("counter").innerHTML =
+document.getElementById("timer").innerHTML =
 days+" days "+hours+" hours "+mins+" minutes "+secs+" seconds ❤️";
 },1000);
 
-/* MUSIC */
-function playMusic(){
-document.getElementById("music").play();
+/* 🎮 Love Counter */
+let love=0;
+function increaseLove(){
+love++;
+document.getElementById("loveCount").innerText="Love Sent: "+love;
 }
 
-/* YES */
-function yesLove(){
-document.getElementById("response").innerHTML="YAYYY 🥰 Forever starts now 💍❤️";
-}
-
-/* NO */
-let count=0;
-let msgs=["Soch lo jaanu 😏","Pakka? 🥺","Chocolate dunga 🍫","Rose bhi 🌹","Last chance 😤","Still love you ❤️"];
-
-function noLove(){
-count++;
-if(count <= msgs.length){
-document.getElementById("response").innerHTML=msgs[count-1];
-}else{
-document.getElementById("response").innerHTML="Ab bas karo 😂 Yes dabao ❤️";
-}
-moveNo();
+/* 💍 Proposal */
+function yesClicked(){
+document.getElementById("proposalText").innerHTML =
+"YAYYY ❤️ You just made me the happiest person alive 😭💖";
 }
 
 function moveNo(){
-let btn=document.getElementById("noBtn");
-btn.style.left=Math.random()*70+"%";
-btn.style.top=Math.random()*120+"px";
+const btn=document.getElementById("noBtn");
+btn.style.position="absolute";
+btn.style.top=Math.random()*300+"px";
+btn.style.left=Math.random()*300+"px";
+document.getElementById("proposalText").innerHTML =
+"Sochlo jaanu 😏 Fir se NO karogi? 😜";
 }
 
-/* LOVE METER */
-function increaseLove(){
-let bar=document.getElementById("fill");
-let width=parseInt(bar.style.width)||0;
-if(width<100){
-bar.style.width=(width+20)+"%";
-}
-}
-
-/* HEART GAME */
-let score=0;
-function heartScore(){
-score++;
-document.getElementById("score").innerText=score;
-}
-
-/* FLOATING HEARTS */
+/* 💖 Floating Hearts */
 setInterval(()=>{
 let heart=document.createElement("div");
-heart.classList.add("heart");
+heart.className="heart";
 heart.innerHTML="❤️";
 heart.style.left=Math.random()*100+"vw";
-heart.style.fontSize=(Math.random()*20+20)+"px";
 document.body.appendChild(heart);
 setTimeout(()=>{heart.remove();},6000);
-},700);
+},800);
 
 </script>
 
