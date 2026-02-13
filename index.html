@@ -1,361 +1,259 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For My Beautiful Anuka ❤️</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
+
+*{margin:0;padding:0;box-sizing:border-box}
 body{
 font-family:'Poppins',sans-serif;
-overflow:hidden;
-background:black;
+background:#000;
 color:white;
-}
-
-/* PARTICLE BACKGROUND */
-canvas{
-position:fixed;
-top:0;
-left:0;
-z-index:-1;
+overflow:hidden;
 }
 
 .slider{
 height:100vh;
-width:100%;
-position:relative;
+overflow-y:scroll;
+scroll-snap-type:y mandatory;
+scroll-behavior:smooth;
 }
 
 .slide{
 height:100vh;
-width:100%;
-position:absolute;
-top:0;
-left:100%;
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
-text-align:center;
+scroll-snap-align:start;
 padding:20px;
-transition:0.6s ease;
+text-align:center;
+background:radial-gradient(circle at center,#1a001f,#000);
+position:relative;
 }
-
-.active{left:0;}
-.prev{left:-100%;}
 
 h1{
 font-family:'Dancing Script',cursive;
 font-size:42px;
 color:#ff4da6;
 text-shadow:0 0 20px #ff1493;
+margin-bottom:20px;
 }
 
 .card{
-background:rgba(255,255,255,0.07);
+background:rgba(255,20,147,0.08);
+backdrop-filter:blur(12px);
 padding:25px;
-border-radius:20px;
-box-shadow:0 0 25px #ff1493;
-max-width:500px;
+border-radius:25px;
+box-shadow:0 0 40px rgba(255,20,147,0.5);
+max-width:380px;
 }
 
 button{
 padding:12px 25px;
-margin:8px;
 border:none;
 border-radius:25px;
-background:#ff1493;
+background:linear-gradient(45deg,#ff1493,#ff4da6);
 color:white;
-cursor:pointer;
-}
-
-.quiz-btn{display:block;width:85%;margin:8px auto;}
-
-.polaroid{
-background:white;
-color:black;
-padding:10px;
+font-weight:600;
 margin:10px;
-display:inline-block;
-border-radius:10px;
-box-shadow:0 10px 20px rgba(0,0,0,0.4);
+cursor:pointer;
+transition:0.3s;
 }
+button:hover{transform:scale(1.1)}
 
-img,video{
+.gallery{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+width:100%;
+max-width:380px;
+}
+.gallery img{
 width:100%;
 border-radius:15px;
+box-shadow:0 0 20px #ff1493;
 }
 
-.hidden{display:none;}
-
-input{
-padding:10px;
-border-radius:10px;
-border:none;
-width:80%;
+#noBtn{
+position:relative;
 }
 
-#letter{
-white-space:pre-line;
-font-size:14px;
+video{
+width:90%;
+border-radius:20px;
+box-shadow:0 0 40px #ff1493;
+}
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+pointer-events:none;
+}
+
+.typing{
+min-height:80px;
+font-size:16px;
 }
 
 </style>
 </head>
 <body>
 
-<canvas id="bg"></canvas>
+<audio id="bgMusic" src="romantic.mp3.mp3" loop></audio>
 
-<div class="slider">
+<div class="slider" id="slider">
 
-<!-- 1 -->
-<div class="slide active">
+<!-- INTRO -->
+<div class="slide">
 <h1>For My Beautiful Anuka ❤️</h1>
-<p>Since 11 July 2024 – 4:50 PM</p>
-<button onclick="next()">Start ➡️</button>
-</div>
-
-<!-- 2 TIMER -->
-<div class="slide">
 <div class="card">
-<h2>We Have Been Together ❤️</h2>
+<p>Since 11 July 2024, 4:50 PM 💖</p>
 <p id="timer"></p>
-<button onclick="next()">Next ➡️</button>
 </div>
 </div>
 
-<!-- 3 VIDEO -->
+<!-- QUIZ -->
 <div class="slide">
+<h1>Love Quiz 💕</h1>
 <div class="card">
-<h2>You Are My Forever 💞</h2>
-<video autoplay muted loop playsinline controls id="vid">
+<p id="quizQ"></p>
+<div id="quizOptions"></div>
+</div>
+</div>
+
+<!-- LETTER -->
+<div class="slide">
+<h1>A Letter For You 💌</h1>
+<div class="card typing" id="letterText"></div>
+</div>
+
+<!-- GALLERY -->
+<div class="slide">
+<h1>Our Memories 📸</h1>
+<div class="gallery">
+<img src="IMG_0067_Original.jpeg">
+<img src="IMG_0668_Original.jpeg">
+<img src="IMG_20241021_000544_Original.jpeg">
+<img src="Screenshot_2024-11-01-01-39-41-08_1c337646f29875672b5a61192b9010f9_Original.jpeg">
+</div>
+</div>
+
+<!-- PROPOSAL -->
+<div class="slide">
+<h1>Will You Be My Valentine? 💍</h1>
+<button onclick="yesAnswer()">YES ❤️</button>
+<button id="noBtn" onclick="moveNo()">NO 😜</button>
+</div>
+
+<!-- VIDEO -->
+<div class="slide" id="videoSlide">
+<h1>You Are My Forever ❤️</h1>
+<video id="videoPlayer" playsinline>
 <source src="HER.mp4" type="video/mp4">
 </video>
-<button onclick="enableAudio()">Unmute 🔊</button>
-<button onclick="next()">Next ➡️</button>
-</div>
-</div>
-
-<!-- 4 QUIZ -->
-<div class="slide">
-<div class="card">
-<h2>Love Quiz 😏</h2>
-<p id="qText"></p>
-<div id="answers"></div>
-<p id="quizResult"></p>
-<button onclick="next()">Next ➡️</button>
-</div>
-</div>
-
-<!-- 5 PROPOSAL -->
-<div class="slide">
-<div class="card">
-<h2>Will You Be Mine Forever? 💍</h2>
-<button onclick="yes()">YES ❤️</button>
-<button id="noBtn" onclick="noClick()">NO 😜</button>
-<p id="proposalText"></p>
-</div>
-</div>
-
-<!-- 6 GALLERY -->
-<div class="slide">
-<h2>Look At This Cutie 😭</h2>
-<div class="polaroid">
-<img src="IMG_0067_Original.jpeg">
-<p>My Home ❤️</p>
-</div>
-<button onclick="next()">Next ➡️</button>
-</div>
-
-<!-- 7 LETTER -->
-<div class="slide">
-<div class="card">
-<h2>A Letter For You 💌</h2>
-<p id="letter"></p>
-<button onclick="next()">Next ➡️</button>
-</div>
-</div>
-
-<!-- 8 SECRET -->
-<div class="slide">
-<div class="card">
-<h2>Secret Surprise 🔐</h2>
-<input type="password" id="pass" placeholder="Enter Password">
-<br><br>
-<button onclick="checkPass()">Unlock</button>
-<p id="secretMsg"></p>
-</div>
 </div>
 
 </div>
+
+<canvas id="fireworks"></canvas>
 
 <script>
 
-/* SLIDES */
-let slides=document.querySelectorAll(".slide");
-let index=0;
+// MUSIC CONTROL
+const bgMusic=document.getElementById("bgMusic");
+document.body.addEventListener("click",()=>bgMusic.play(),{once:true});
 
-function next(){
-slides[index].classList.remove("active");
-slides[index].classList.add("prev");
-index++;
-if(index>=slides.length) index=slides.length-1;
-slides[index].classList.add("active");
-}
-
-/* TIMER */
-const startDate=new Date("July 11, 2024 16:50:00").getTime();
-setInterval(()=>{
+// TIMER
+function timer(){
+let start=new Date("July 11, 2024 16:50:00").getTime();
 let now=new Date().getTime();
-let diff=now-startDate;
-let d=Math.floor(diff/(1000*60*60*24));
-let h=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
-let m=Math.floor((diff%(1000*60*60))/(1000*60));
-let s=Math.floor((diff%(1000*60))/1000);
-document.getElementById("timer").innerHTML=
-d+" days "+h+" hours "+m+" mins "+s+" secs ❤️";
-},1000);
-
-/* VIDEO AUDIO */
-function enableAudio(){
-let v=document.getElementById("vid");
-v.muted=false;
-v.play();
+let diff=now-start;
+let days=Math.floor(diff/(1000*60*60*24));
+document.getElementById("timer").innerHTML=days+" days together ❤️";
 }
+setInterval(timer,1000);
 
-/* QUIZ SYSTEM */
+// QUIZ
 const quiz=[
-{
-q:"Who is the boss?",
-a:["Obviously You ❤️","Me","My Mom"],
-c:0
-},
-{
-q:"Where is my forever?",
-a:["In your heart 💖","Paris","Mars"],
-c:0
-}
+{q:"Who loves more? 😜",a:["You","Me","Both 💕"],correct:2},
+{q:"Where is my forever? 💖",a:["Paris","In your heart","Mars"],correct:1}
 ];
-
 let qIndex=0;
 function loadQuiz(){
-document.getElementById("qText").innerHTML=quiz[qIndex].q;
-let ansDiv=document.getElementById("answers");
-ansDiv.innerHTML="";
-quiz[qIndex].a.forEach((ans,i)=>{
-let btn=document.createElement("button");
-btn.innerText=ans;
-btn.className="quiz-btn";
-btn.onclick=function(){
-if(i===quiz[qIndex].c){
-document.getElementById("quizResult").innerHTML="Correct 😍";
-}else{
-document.getElementById("quizResult").innerHTML="Wrong 😜";
-}
-};
-ansDiv.appendChild(btn);
+let q=quiz[qIndex];
+document.getElementById("quizQ").innerHTML=q.q;
+let opt="";
+q.a.forEach((ans,i)=>{
+opt+=`<button onclick="checkAns(${i})">${ans}</button>`;
 });
+document.getElementById("quizOptions").innerHTML=opt;
+}
+function checkAns(i){
+if(i===quiz[qIndex].correct){
+qIndex++;
+if(qIndex<quiz.length){loadQuiz();}
+else{alert("You passed 😍")}
+}else{alert("Try again cutie 😘")}
 }
 loadQuiz();
 
-/* NO BUTTON CONTROL */
-function noClick(){
-let btn=document.getElementById("noBtn");
-btn.style.transform="scale(0.7)";
-document.getElementById("proposalText").innerHTML="Soch lo jaanu 😏❤️";
-}
-
-/* YES FIREWORKS */
-function yes(){
-document.getElementById("proposalText").innerHTML="YAYYY ❤️😭";
-confetti();
-}
-
-/* CONFETTI */
-function confetti(){
-for(let i=0;i<80;i++){
-let div=document.createElement("div");
-div.style.position="fixed";
-div.style.left=Math.random()*100+"vw";
-div.style.top=Math.random()*100+"vh";
-div.style.width="6px";
-div.style.height="6px";
-div.style.background="pink";
-document.body.appendChild(div);
-setTimeout(()=>div.remove(),1000);
-}
-}
-
-/* LETTER TYPING */
-let text="My baby ❤️\n\nFrom 11 July 2024 at 4:50 PM, my life changed forever...\nYou are my peace, my chaos, my happiness.\nNo matter what happens, I choose you.\nAlways.\nForever.\nOnly You 💖";
+// LETTER TYPING
+let text="From 11 July 2024 at 4:50 PM, my life changed forever. You are my peace, my happiness, my everything. No matter what happens, I choose you. Forever. Only You 💕";
 let i=0;
-function typeLetter(){
+function typing(){
 if(i<text.length){
-document.getElementById("letter").innerHTML+=text.charAt(i);
+document.getElementById("letterText").innerHTML+=text.charAt(i);
 i++;
-setTimeout(typeLetter,40);
+setTimeout(typing,35);
 }
 }
-typeLetter();
+typing();
 
-/* PASSWORD */
-function checkPass(){
-let p=document.getElementById("pass").value;
-if(p==="11July"){
-document.getElementById("secretMsg").innerHTML="You unlocked my heart ❤️";
-}else{
-document.getElementById("secretMsg").innerHTML="Wrong password 😜";
-}
+// NO BUTTON SAFE MOVE
+function moveNo(){
+let btn=document.getElementById("noBtn");
+let x=Math.random()*200-100;
+let y=Math.random()*200-100;
+btn.style.transform=`translate(${x}px,${y}px)`;
 }
 
-/* PARTICLES */
-const canvas=document.getElementById("bg");
+// FIREWORKS PARTICLES
+const canvas=document.getElementById("fireworks");
 const ctx=canvas.getContext("2d");
 canvas.width=window.innerWidth;
 canvas.height=window.innerHeight;
 
-let particles=[];
-for(let i=0;i<100;i++){
-particles.push({
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-r:Math.random()*2,
-d:Math.random()*1
-});
-}
-
-function draw(){
-ctx.clearRect(0,0,canvas.width,canvas.height);
-ctx.fillStyle="rgba(255,20,147,0.5)";
-particles.forEach(p=>{
+function yesAnswer(){
+for(let i=0;i<80;i++){
+let x=Math.random()*canvas.width;
+let y=Math.random()*canvas.height;
+ctx.fillStyle="pink";
 ctx.beginPath();
-ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+ctx.arc(x,y,3,0,Math.PI*2);
 ctx.fill();
-});
-update();
+}
+alert("Forever Together ❤️");
 }
 
-function update(){
-particles.forEach(p=>{
-p.y+=p.d;
-if(p.y>canvas.height){p.y=0;}
-});
+// VIDEO AUDIO CONTROL
+const slider=document.getElementById("slider");
+const video=document.getElementById("videoPlayer");
+
+slider.addEventListener("scroll",()=>{
+let rect=document.getElementById("videoSlide").getBoundingClientRect();
+if(rect.top<300 && rect.bottom>300){
+bgMusic.pause();
+video.play();
+}else{
+video.pause();
+bgMusic.play();
 }
-
-setInterval(draw,33);
-
-/* SWIPE SUPPORT */
-let startX=0;
-document.addEventListener("touchstart",e=>{
-startX=e.touches[0].clientX;
-});
-document.addEventListener("touchend",e=>{
-let endX=e.changedTouches[0].clientX;
-if(startX-endX>50) next();
 });
 
 </script>
