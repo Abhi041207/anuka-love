@@ -18,29 +18,29 @@ color:white;
 /* BEAUTIFUL BACKGROUND */
 body{
 background:
-linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)),
+linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.75)),
 url("Screenshot_2024-10-19-18-41-02-32_99c04817c0de5652397fc8b56c3b3817_Original.jpeg");
 background-size:cover;
 background-position:center;
 background-attachment:fixed;
 }
 
-/* Floating glow particles */
+/* soft animated glow */
 body::after{
 content:"";
 position:fixed;
 width:100%;
 height:100%;
 background:
-radial-gradient(circle,#ff007733 1px,transparent 1px);
-background-size:40px 40px;
-animation:move 10s linear infinite;
+radial-gradient(circle,#ff007722 1px,transparent 1px);
+background-size:35px 35px;
+animation:move 20s linear infinite;
 z-index:-1;
 }
 
 @keyframes move{
 0%{background-position:0 0;}
-100%{background-position:100px 100px;}
+100%{background-position:200px 200px;}
 }
 
 .container{
@@ -60,11 +60,12 @@ text-align:center;
 
 .card{
 background:rgba(0,0,0,0.85);
-backdrop-filter:blur(20px);
+backdrop-filter:blur(15px);
 padding:30px;
 border-radius:25px;
-box-shadow:0 0 60px #ff0077;
+box-shadow:0 0 50px #ff0077;
 max-width:400px;
+width:100%;
 }
 
 h1{
@@ -95,11 +96,14 @@ button:hover{transform:scale(1.1);}
 background:linear-gradient(45deg,#ff5c8a,#ff99aa);
 }
 
+/* Gallery */
 .gallery{
 display:grid;
 grid-template-columns:repeat(2,1fr);
 gap:15px;
 margin-top:20px;
+width:100%;
+max-width:400px;
 }
 
 .gallery img{
@@ -113,6 +117,7 @@ width:90%;
 border-radius:20px;
 box-shadow:0 0 50px #ff0077;
 }
+
 </style>
 </head>
 
@@ -137,7 +142,7 @@ box-shadow:0 0 50px #ff0077;
 <div class="card">
 <h1>A Letter For You 💌</h1>
 <p id="letter"></p>
-<button onclick="next()">Next 💖</button>
+<button onclick="goNext()">Next 💖</button>
 </div>
 </div>
 
@@ -148,9 +153,8 @@ box-shadow:0 0 50px #ff0077;
 <img src="IMG_0067_Original.jpeg">
 <img src="IMG_0668_Original.jpeg">
 <img src="IMG_20241021_000544_Original.jpeg">
-<img src="Screenshot_2024-10-19-18-41-02-32_99c04817c0de5652397fc8b56c3b3817_Original.jpeg">
 </div>
-<button onclick="next()">Next 💕</button>
+<button onclick="goNext()">Next 💕</button>
 </div>
 
 <!-- Slide 4 Video -->
@@ -162,38 +166,41 @@ box-shadow:0 0 50px #ff0077;
 </div>
 
 <script>
+
 let current=0;
 const container=document.getElementById("container");
 const bgMusic=document.getElementById("bgMusic");
 const video=document.getElementById("video");
 
-/* Fix iPhone autoplay */
-document.body.addEventListener("click",()=>{
-bgMusic.play();
-},{once:true});
-
-function next(){
+function goNext(){
+if(current<3){
 current++;
 container.style.transform=`translateY(-${current*100}vh)`;
 }
+}
 
-/* YES NO logic */
+/* autoplay fix for iPhone */
+document.body.addEventListener("click",()=>{
+bgMusic.play().catch(()=>{});
+},{once:true});
+
+/* YES NO */
 let noCount=0;
-let yesSize=1;
+let yesScale=1;
 const yesBtn=document.getElementById("yesBtn");
 const noBtn=document.getElementById("noBtn");
 
 function yesClick(){
-next();
+goNext();
 }
 
 function noClick(){
 noCount++;
-yesSize+=0.2;
-yesBtn.style.transform=`scale(${yesSize})`;
+yesScale+=0.2;
+yesBtn.style.transform=`scale(${yesScale})`;
 
 noBtn.style.position="relative";
-noBtn.style.left=Math.random()*50-25+"px";
+noBtn.style.left=(Math.random()*60-30)+"px";
 
 if(noCount>=10){
 noBtn.style.display="none";
@@ -204,14 +211,15 @@ const replies=[
 "Think again 😏",
 "Bas YES dabao ❤️",
 "Main ro dunga 🥹",
-"Phir se try karo 😌"
+"Phir se try karo 😌",
+"Tum YES hi karogi 😎"
 ];
 
 document.getElementById("noText").innerText=
 replies[noCount%replies.length];
 }
 
-/* LETTER typing */
+/* Letter typing */
 const text=`From 11 July 2024 at 4:50 PM 💕
 My life changed forever.
 You are my happiness,
@@ -223,19 +231,20 @@ function type(){
 if(i<text.length){
 document.getElementById("letter").innerHTML+=text.charAt(i);
 i++;
-setTimeout(type,40);
+setTimeout(type,35);
 }
 }
-setTimeout(type,1000);
+setTimeout(type,800);
 
-/* Play video when slide 4 */
+/* Play video only when slide 4 */
 const observer=new MutationObserver(()=>{
 if(current===3){
-video.play();
 bgMusic.pause();
+video.play().catch(()=>{});
 }
 });
 observer.observe(container,{attributes:true});
+
 </script>
 
 </body>
