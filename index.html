@@ -13,20 +13,14 @@ html,body{
 height:100%;
 overflow:hidden;
 font-family:'Poppins',sans-serif;
-background:#000;
-color:white;
-}
-
-/* Soft Romantic Background */
-body{
 background:
 linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)),
 url("Screenshot_2024-10-19-18-41-02-32_99c04817c0de5652397fc8b56c3b3817_Original.jpeg");
 background-size:cover;
 background-position:center;
+color:white;
 }
 
-/* Slide System */
 .container{
 height:100vh;
 transition:transform .7s ease;
@@ -42,7 +36,6 @@ padding:20px;
 text-align:center;
 }
 
-/* Card */
 .card{
 background:rgba(0,0,0,0.85);
 padding:30px;
@@ -52,7 +45,6 @@ max-width:420px;
 width:100%;
 }
 
-/* Heading */
 h1{
 font-family:'Great Vibes',cursive;
 font-size:40px;
@@ -60,7 +52,6 @@ color:#ff66b3;
 margin-bottom:20px;
 }
 
-/* Buttons */
 button{
 padding:14px 28px;
 border:none;
@@ -73,11 +64,8 @@ cursor:pointer;
 transition:.3s;
 }
 
-button:hover{
-transform:scale(1.1);
-}
+button:hover{transform:scale(1.1);}
 
-/* Gallery */
 .gallery{
 display:grid;
 grid-template-columns:repeat(2,1fr);
@@ -92,14 +80,12 @@ border-radius:15px;
 box-shadow:0 0 15px #ff0077;
 }
 
-/* Video */
 video{
 width:90%;
 border-radius:20px;
 box-shadow:0 0 40px #ff0077;
 }
 
-/* Counter */
 .counter{
 margin-top:20px;
 font-size:18px;
@@ -115,26 +101,27 @@ color:#ff99cc;
 
 <div class="container" id="container">
 
-<!-- 0 Slide -->
+<!-- Slide 0 -->
 <div class="slide">
 <div class="card">
 <h1>Will You Be My Valentine? ❤️</h1>
-<button onclick="goNext()">YES 💕</button>
-<button onclick="noClick()" id="noBtn">NO 😏</button>
+<button onclick="nextSlide()">YES 💕</button>
+<button onclick="funnyNo()">NO 😏</button>
 <p id="noText"></p>
+<button onclick="nextSlide()">Next ➜</button>
 </div>
 </div>
 
-<!-- 1 Slide Letter -->
+<!-- Slide 1 -->
 <div class="slide">
 <div class="card">
 <h1>A Letter For You 💌</h1>
 <p id="letter"></p>
-<button onclick="goNext()">Next 💖</button>
+<button onclick="nextSlide()">Next ➜</button>
 </div>
 </div>
 
-<!-- 2 Slide Album -->
+<!-- Slide 2 -->
 <div class="slide">
 <h1>Our Memories 📸</h1>
 <div class="gallery">
@@ -143,22 +130,23 @@ color:#ff99cc;
 <img src="IMG_20241021_000544_Original.jpeg">
 <img src="IMG_0067_Original.jpeg">
 </div>
-<button onclick="goNext()">Next 💕</button>
+<button onclick="nextSlide()">Next ➜</button>
 </div>
 
-<!-- 3 Slide Video -->
+<!-- Slide 3 -->
 <div class="slide">
 <h1>You Are My Forever 💞</h1>
 <video id="video" src="HER.mp4" controls></video>
-<button onclick="goNext()">Next ❤️</button>
+<button onclick="nextSlide()">Next ➜</button>
 </div>
 
-<!-- 4 Slide Final -->
+<!-- Slide 4 -->
 <div class="slide">
 <div class="card">
 <h1>Forever Us 💍</h1>
 <p>I love you endlessly ❤️</p>
 <div class="counter" id="counter"></div>
+<button onclick="restart()">Restart 💖</button>
 </div>
 </div>
 
@@ -166,33 +154,42 @@ color:#ff99cc;
 
 <script>
 
-/* Slide Control */
 let current=0;
 const container=document.getElementById("container");
 const video=document.getElementById("video");
 const bgMusic=document.getElementById("bgMusic");
+const totalSlides=5;
 
-function goNext(){
-if(current < 4){
+/* Navigation */
+function nextSlide(){
+if(current < totalSlides-1){
 current++;
 container.style.transform=`translateY(-${current*100}vh)`;
 }
 
-/* Stop music on video slide */
+/* Handle video slide */
 if(current === 3){
 bgMusic.pause();
 video.play().catch(()=>{});
 }
 }
 
-/* Background music iPhone fix */
+function restart(){
+current=0;
+container.style.transform=`translateY(0vh)`;
+bgMusic.play().catch(()=>{});
+video.pause();
+video.currentTime=0;
+}
+
+/* Music fix */
 document.body.addEventListener("click",()=>{
 bgMusic.play().catch(()=>{});
 },{once:true});
 
-/* NO Button Funny */
+/* Funny NO */
 let noCount=0;
-function noClick(){
+function funnyNo(){
 const replies=[
 "Are you sure? 🥺",
 "Think again 😏",
@@ -200,8 +197,8 @@ const replies=[
 "Main ro dunga 🥹",
 "Tum YES hi karogi 😎"
 ];
-document.getElementById("noText").innerText =
-replies[noCount % replies.length];
+document.getElementById("noText").innerText=
+replies[noCount%replies.length];
 noCount++;
 }
 
