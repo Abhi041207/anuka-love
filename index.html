@@ -6,19 +6,52 @@
 <title>For My Anuka ❤️</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family: 'Segoe UI',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
 
 html,body{
 height:100%;
 overflow:hidden;
-background:#000;
 color:white;
+background:black;
+}
+
+/* CINEMATIC BACKGROUND */
+body::before{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:
+linear-gradient(-45deg,#000,#200014,#000,#2a002a);
+background-size:400% 400%;
+animation:gradientMove 12s ease infinite;
+z-index:-3;
+}
+
+@keyframes gradientMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+/* PHOTO OVERLAY */
+body::after{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:url("Screenshot_2024-10-19-18-41-02-32_99c04817c0de5652397fc8b56c3b3817_Original.jpeg") center/cover no-repeat;
+opacity:0.25;
+z-index:-2;
 }
 
 .container{
 height:100vh;
-width:100%;
-transition:transform 0.6s ease;
+transition:transform 0.7s ease;
 }
 
 .slide{
@@ -29,70 +62,61 @@ justify-content:center;
 align-items:center;
 padding:20px;
 text-align:center;
-position:relative;
-}
-
-/* BACKGROUND IMAGE FIXED */
-.slide::before{
-content:"";
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:url("Screenshot_2024-10-19-18-41-02-32_99c04817c0de5652397fc8b56c3b3817_Original.jpeg") center/cover no-repeat;
-opacity:0.35;
-z-index:-2;
-}
-
-.slide::after{
-content:"";
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.7);
-z-index:-1;
 }
 
 .card{
 background:rgba(0,0,0,0.8);
-padding:25px;
-border-radius:25px;
-box-shadow:0 0 30px #ff0080;
-max-width:420px;
+padding:30px;
+border-radius:30px;
+box-shadow:0 0 40px #ff0080;
+max-width:430px;
 width:95%;
 }
+
+h1,h2{margin-bottom:20px;}
 
 button{
 background:linear-gradient(45deg,#ff0080,#ff4da6);
 border:none;
-padding:15px 30px;
+padding:15px 35px;
 margin:10px;
-border-radius:30px;
+border-radius:40px;
 color:white;
 font-size:18px;
 cursor:pointer;
 transition:0.3s;
-min-width:120px;
 }
 
 button:hover{transform:scale(1.1);}
 
+input{
+padding:12px;
+border-radius:20px;
+border:none;
+width:85%;
+margin:10px;
+}
+
 #funnyText{
+min-height:30px;
 margin-top:10px;
 color:#ff99cc;
 font-weight:bold;
-min-height:25px;
 }
 
-/* Gallery */
+/* QUIZ */
+.quizBtn{
+display:block;
+width:80%;
+margin:8px auto;
+}
+
+/* GALLERY */
 .gallery{
 display:grid;
 grid-template-columns:repeat(2,1fr);
 gap:15px;
-margin-top:20px;
+margin-top:15px;
 }
 
 .gallery img{
@@ -101,23 +125,32 @@ border-radius:15px;
 box-shadow:0 0 15px #ff0080;
 }
 
-/* Video */
+/* VIDEO */
 video{
 width:100%;
 border-radius:20px;
 box-shadow:0 0 30px #ff0080;
 }
 
-canvas{
-position:absolute;
-top:0;
-left:0;
-pointer-events:none;
-z-index:1;
+/* FLOATING HEARTS */
+.heart{
+position:fixed;
+bottom:-20px;
+color:#ff4da6;
+animation:floatUp 8s linear infinite;
+font-size:20px;
+opacity:0.5;
+}
+
+@keyframes floatUp{
+0%{transform:translateY(0);}
+100%{transform:translateY(-110vh);}
 }
 </style>
 </head>
 <body>
+
+<audio id="bgMusic" src="romantic.mp3.mp3" loop></audio>
 
 <div class="container" id="container">
 
@@ -129,22 +162,26 @@ z-index:1;
 <button onclick="noClick()">NO 😏</button>
 <p id="funnyText"></p>
 </div>
-<canvas id="fireworks"></canvas>
 </div>
 
-<!-- SLIDE 2 SECRET -->
+<!-- SLIDE 2 QUIZ -->
 <div class="slide">
 <div class="card">
-<h2>Secret Surprise 🔐</h2>
-<p><b>Hint:</b> What is first nickname you gave me?</p>
-<input id="passInput" placeholder="Enter Password" style="padding:10px;border-radius:15px;border:none;margin:10px;width:85%;">
-<br>
-<button onclick="unlock()">Unlock</button>
-<p id="wrongPass"></p>
+<h2>Love Quiz 💕</h2>
+<p id="quizQuestion"></p>
+<div id="quizOptions"></div>
 </div>
 </div>
 
-<!-- SLIDE 3 GALLERY -->
+<!-- SLIDE 3 LETTER -->
+<div class="slide">
+<div class="card">
+<h2>A Letter For You 💌</h2>
+<p id="typedLetter"></p>
+</div>
+</div>
+
+<!-- SLIDE 4 GALLERY -->
 <div class="slide">
 <div class="card">
 <h2>Our Memories ❤️</h2>
@@ -154,12 +191,22 @@ z-index:1;
 <img src="IMG_20241021_000544_Original.jpeg">
 <img src="Screenshot_2024-11-01-01-39-41-08_1c337646f29875672b5a61192b9010f9_Original.jpeg">
 </div>
-<br>
-<button onclick="nextSlide()">Next 💎</button>
+<button onclick="nextSlide()">Next</button>
 </div>
 </div>
 
-<!-- SLIDE 4 VIDEO -->
+<!-- SLIDE 5 PASSWORD -->
+<div class="slide">
+<div class="card">
+<h2>Secret Surprise 🔐</h2>
+<p><b>Hint:</b> What is first nickname you gave me?</p>
+<input id="passInput" placeholder="Enter password">
+<button onclick="unlock()">Unlock</button>
+<p id="wrongPass"></p>
+</div>
+</div>
+
+<!-- SLIDE 6 VIDEO -->
 <div class="slide">
 <div class="card">
 <h2>You Are My Forever ❤️</h2>
@@ -171,114 +218,102 @@ z-index:1;
 
 <script>
 
+/* FLOATING HEARTS */
+setInterval(()=>{
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML="❤️";
+h.style.left=Math.random()*100+"vw";
+h.style.fontSize=(15+Math.random()*20)+"px";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),8000);
+},600);
+
 let current=0;
 function nextSlide(){
 current++;
 document.getElementById("container").style.transform="translateY(-"+(current*100)+"vh)";
 }
 
-function yesClick(){
-startFireworks();
-setTimeout(()=>{
-nextSlide();
-},2000);
+/* MUSIC START AFTER FIRST CLICK */
+function startMusic(){
+document.getElementById("bgMusic").play();
 }
 
-/* 50 FUNNY REPLIES */
+/* YES */
+function yesClick(){
+startMusic();
+nextSlide();
+}
+
+/* FUNNY NO */
 let replies=[
-"Sochlo jaanu 😏","Arey firse NO? 😒","Pls maan jao 🥺","Last chance 😭",
-"System crash ho jayega 😂","Bas ab YES hi dabao ❤️","Drama queen 😂",
-"Ab kya karu main 😭","Dil tod diya 💔","Ye cheating hai 😤",
-"Bhagwan sab dekh raha hai 👀","NO allowed nahi 😏",
-"YES hi option hai 😌","Server overload 😂","Mat satao mujhe 🥺",
-"Main ro dunga 😭","Zyada attitude aa raha hai 😤",
-"Final warning ⚠️","System hang ho gaya 😂",
-"Acha chalo maan jao ❤️","Kitna tadpaogi 😭",
-"YES button glow ho raha dekho 😏","NO disable kar deta hu 😎",
-"Aapka jawab galat hai 😂","Retry karo 😏",
-"Love test fail ho raha 😭","System update needed 😂",
-"Wrong answer 😂","Dil dukha diya 💔",
-"Ab toh haan bol do ❤️","No se kya milega 😒",
-"YES mein hi happiness hai 😏",
-"Arey meri jaan 🥺","Itna bhi mat satao 😭",
-"Ye cheating hai 😤","Bas ek YES chahiye ❤️",
-"Drama mat karo 😂","Dil pe mat lo 💔",
-"Aur kitna test logi 😭",
-"NO ka tax lagega 😂",
-"Arey plssss ❤️",
-"Main serious ho raha hu 😏",
-"Bas ab ho gaya 😂",
-"Chalo maan jao 🥺",
-"Ye unfair hai 😭",
-"NO se kuch nahi hoga 😏",
-"YES dabao warna main aa raha 😂",
-"Last last chance 😭",
-"Ab toh pakka YES ❤️"
+"Sochlo jaanu 😏","Pls maan jao 🥺","System crash 😂","Drama queen 😆",
+"Ab toh haan bol do ❤️","Dil dukha diya 💔","Bas ek YES chahiye 😭",
+"Arey meri jaan 🥺","Wrong answer 😂","Retry karo 😏"
 ];
 
 let noCount=0;
 function noClick(){
-if(noCount<replies.length){
-document.getElementById("funnyText").innerText=replies[noCount];
+startMusic();
+document.getElementById("funnyText").innerText=replies[noCount%replies.length];
 noCount++;
 }
+
+/* QUIZ SYSTEM */
+let quiz=[
+{q:"Where is my forever? 💖",a:["Paris","In your heart","Mars"],c:1},
+{q:"Who loves you most? 😏",a:["Me","Your dog","Secret admirer"],c:0},
+{q:"Who is my world? 🌍",a:["You","Moon","Mars"],c:0}
+];
+
+let quizIndex=0;
+
+function loadQuiz(){
+let q=quiz[quizIndex];
+document.getElementById("quizQuestion").innerText=q.q;
+let opt="";
+q.a.forEach((ans,i)=>{
+opt+=`<button class="quizBtn" onclick="checkAnswer(${i})">${ans}</button>`;
+});
+document.getElementById("quizOptions").innerHTML=opt;
+}
+loadQuiz();
+
+function checkAnswer(i){
+if(i===quiz[quizIndex].c){
+quizIndex++;
+if(quizIndex<quiz.length){
+loadQuiz();
+}else{
+nextSlide();
+}
+}
 }
 
-/* PASSWORD SYSTEM */
+/* TYPING LETTER */
+let text="From 11 July 2024 at 4:50PM, my life changed forever. You are my peace, my smile, my happiness. No matter what happens, I choose you. Forever. Only You 💖";
+let i=0;
+function type(){
+if(i<text.length){
+document.getElementById("typedLetter").innerHTML+=text.charAt(i);
+i++;
+setTimeout(type,40);
+}
+}
+type();
+
+/* PASSWORD */
 function unlock(){
-let input=document.getElementById("passInput").value
-.toLowerCase()
-.replace(/\s+/g,'');
-
-let valid1="mymisteridiothero";
-let valid2="misteridiothero";
-
-if(input===valid1 || input===valid2){
-document.getElementById("wrongPass").innerText="Unlocked ❤️";
-setTimeout(()=>{
+let input=document.getElementById("passInput").value.toLowerCase().replace(/\s+/g,'');
+if(input==="mymisteridiothero"||input==="misteridiothero"){
 nextSlide();
-},1000);
+setTimeout(()=>{
+document.getElementById("herVideo").play();
+},800);
 }else{
 document.getElementById("wrongPass").innerText="Wrong password 😭";
 }
-}
-
-/* FIREWORKS FIXED */
-const canvas=document.getElementById("fireworks");
-const ctx=canvas.getContext("2d");
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-
-function startFireworks(){
-for(let i=0;i<10;i++){
-setTimeout(()=>burst(),i*200);
-}
-}
-
-function burst(){
-let x=Math.random()*canvas.width;
-let y=Math.random()*canvas.height/2;
-for(let i=0;i<20;i++){
-let angle=Math.random()*2*Math.PI;
-let speed=Math.random()*3+2;
-particle(x,y,Math.cos(angle)*speed,Math.sin(angle)*speed);
-}
-}
-
-function particle(x,y,dx,dy){
-let life=40;
-function draw(){
-ctx.clearRect(0,0,canvas.width,canvas.height);
-ctx.beginPath();
-ctx.arc(x,y,3,0,Math.PI*2);
-ctx.fillStyle="#ff4da6";
-ctx.fill();
-x+=dx;
-y+=dy;
-life--;
-if(life>0)requestAnimationFrame(draw);
-}
-draw();
 }
 
 </script>
