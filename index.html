@@ -15,7 +15,6 @@ font-family:'Poppins',sans-serif;
 color:white;
 }
 
-/* BEAUTIFUL BACKGROUND */
 body{
 background:
 linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.75)),
@@ -23,24 +22,6 @@ url("Screenshot_2024-10-19-18-41-02-32_99c04817c0de5652397fc8b56c3b3817_Original
 background-size:cover;
 background-position:center;
 background-attachment:fixed;
-}
-
-/* soft animated glow */
-body::after{
-content:"";
-position:fixed;
-width:100%;
-height:100%;
-background:
-radial-gradient(circle,#ff007722 1px,transparent 1px);
-background-size:35px 35px;
-animation:move 20s linear infinite;
-z-index:-1;
-}
-
-@keyframes move{
-0%{background-position:0 0;}
-100%{background-position:200px 200px;}
 }
 
 .container{
@@ -91,12 +72,6 @@ box-shadow:0 0 20px #ff0077;
 
 button:hover{transform:scale(1.1);}
 
-#yesBtn{font-size:20px;}
-#noBtn{
-background:linear-gradient(45deg,#ff5c8a,#ff99aa);
-}
-
-/* Gallery */
 .gallery{
 display:grid;
 grid-template-columns:repeat(2,1fr);
@@ -116,6 +91,12 @@ video{
 width:90%;
 border-radius:20px;
 box-shadow:0 0 50px #ff0077;
+}
+
+.counter{
+font-size:20px;
+margin-top:20px;
+color:#ff99cc;
 }
 
 </style>
@@ -161,6 +142,16 @@ box-shadow:0 0 50px #ff0077;
 <div class="slide">
 <h1>You Are My Forever 💞</h1>
 <video id="video" src="HER.mp4" controls></video>
+<button onclick="goNext()">Next ❤️</button>
+</div>
+
+<!-- Slide 5 Final -->
+<div class="slide">
+<div class="card">
+<h1>Forever Us 💍</h1>
+<p>I love you more every single day ❤️</p>
+<div class="counter" id="loveCounter"></div>
+</div>
 </div>
 
 </div>
@@ -173,18 +164,16 @@ const bgMusic=document.getElementById("bgMusic");
 const video=document.getElementById("video");
 
 function goNext(){
-if(current<3){
+if(current<4){
 current++;
 container.style.transform=`translateY(-${current*100}vh)`;
 }
 }
 
-/* autoplay fix for iPhone */
 document.body.addEventListener("click",()=>{
 bgMusic.play().catch(()=>{});
 },{once:true});
 
-/* YES NO */
 let noCount=0;
 let yesScale=1;
 const yesBtn=document.getElementById("yesBtn");
@@ -198,7 +187,6 @@ function noClick(){
 noCount++;
 yesScale+=0.2;
 yesBtn.style.transform=`scale(${yesScale})`;
-
 noBtn.style.position="relative";
 noBtn.style.left=(Math.random()*60-30)+"px";
 
@@ -211,7 +199,6 @@ const replies=[
 "Think again 😏",
 "Bas YES dabao ❤️",
 "Main ro dunga 🥹",
-"Phir se try karo 😌",
 "Tum YES hi karogi 😎"
 ];
 
@@ -219,7 +206,6 @@ document.getElementById("noText").innerText=
 replies[noCount%replies.length];
 }
 
-/* Letter typing */
 const text=`From 11 July 2024 at 4:50 PM 💕
 My life changed forever.
 You are my happiness,
@@ -236,7 +222,6 @@ setTimeout(type,35);
 }
 setTimeout(type,800);
 
-/* Play video only when slide 4 */
 const observer=new MutationObserver(()=>{
 if(current===3){
 bgMusic.pause();
@@ -244,6 +229,24 @@ video.play().catch(()=>{});
 }
 });
 observer.observe(container,{attributes:true});
+
+/* LOVE COUNTER */
+const startDate=new Date("July 11, 2024 16:50:00");
+
+function updateCounter(){
+const now=new Date();
+const diff=now-startDate;
+
+const days=Math.floor(diff/(1000*60*60*24));
+const hours=Math.floor((diff/(1000*60*60))%24);
+const minutes=Math.floor((diff/(1000*60))%60);
+const seconds=Math.floor((diff/1000)%60);
+
+document.getElementById("loveCounter").innerHTML=
+`${days} days ${hours} hrs ${minutes} mins ${seconds} secs ❤️`;
+}
+
+setInterval(updateCounter,1000);
 
 </script>
 
