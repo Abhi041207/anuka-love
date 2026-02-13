@@ -1,166 +1,61 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Anuka ❤️</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
-
-<style>
-body{
-margin:0;
-font-family:'Poppins',sans-serif;
-background:linear-gradient(135deg,#120018,#3b003f);
-color:white;
-text-align:center;
-overflow-x:hidden;
-}
-
-.container{
-padding:30px 20px;
-}
-
-h1{
-font-family:'Great Vibes',cursive;
-font-size:48px;
-color:#ff4da6;
-text-shadow:0 0 20px #ff4da6;
-}
-
-img{
-width:90%;
-max-width:320px;
-border-radius:20px;
-box-shadow:0 0 20px #ff0080;
-margin-top:20px;
-}
-
-/* Buttons */
-button{
-padding:10px 20px;
-border:none;
-border-radius:30px;
-margin:8px;
-font-size:15px;
-cursor:pointer;
-background:linear-gradient(45deg,#ff0080,#ff4da6);
-color:white;
-transition:0.3s;
-}
-
-button:hover{
-transform:scale(1.1);
-}
-
-/* Game area fixed */
-.game-area{
-position:relative;
-height:150px;
-margin-top:20px;
-}
-
-#noBtn{
-position:absolute;
-left:60%;
-top:40px;
-}
-
-#response{
-margin-top:15px;
-font-size:18px;
-color:#ff4da6;
-display:none;
-}
-
-/* Floating hearts */
-.heart{
-position:fixed;
-bottom:-20px;
-animation:floatUp 6s linear infinite;
-}
-
-@keyframes floatUp{
-0%{transform:translateY(0);opacity:1;}
-100%{transform:translateY(-100vh);opacity:0;}
-}
-
-</style>
-</head>
-
-<body>
-
-<div class="container">
-
-<h1>For My Beautiful Anuka ❤️</h1>
-
-<p>
-Happy Valentine’s Day Anuka ❤️<br>
-You are my peace, my happiness, my forever.
-I choose you today, tomorrow and always 💍✨
-</p>
-
-<img src="IMG_0668_Original.jpeg">
-
-<br><br>
-
-<!-- MUSIC BUTTON -->
-<button onclick="playMusic()">Play Our Song 🎵</button>
-
-<audio id="music" loop>
-<source src="romantic.mp3.mp3" type="audio/mp3">
-</audio>
-
-<h2>Will You Be My Valentine? 😏</h2>
-
-<div class="game-area">
-<button onclick="yesLove()">Yes ❤️</button>
-<button id="noBtn" onclick="noLove()">No 😒</button>
-</div>
-
-<div id="response"></div>
-
-</div>
-
 <script>
 
 /* MUSIC */
 function playMusic(){
 var audio = document.getElementById("music");
-audio.play().catch(()=>alert("Agar song nahi chale toh file name check karo 😅"));
+audio.play().catch(()=>alert("Song file name check karo 😅"));
 }
 
 /* YES BUTTON */
 function yesLove(){
 var r=document.getElementById("response");
 r.style.display="block";
-r.innerHTML="YAYYY 🥰 I knew it! Forever starts now 💍❤️";
+r.innerHTML="YAYYYYY 🥰 I knew it! Ab officially tum meri ho 💍❤️ Forever begins now!";
 }
 
-/* NO BUTTON FUN */
+/* MASSIVE NO REPLY SYSTEM */
 let noCount=0;
+
+let messages = [
+"Soch lo jaanu 😏",
+"Pakka? 🥺",
+"Ek baar aur soch lo 😭",
+"Itna attitude theek nahi madam 😤",
+"Main ro dunga sach me 😭",
+"Please maan jao naaa 🥺",
+"Acha theek hai chocolate dunga 🍫",
+"Rose bhi dunga 🌹",
+"Movie date bhi pakka 🎬",
+"Long drive bhi 🚗",
+"Shopping bhi karaunga 🛍️",
+"Bas ek baar Yes bol do 🥹",
+"Tumhare bina Valentine adhura hai 😔",
+"Main good boy ban jaunga 😇",
+"Ladai nahi karunga promise 🤞",
+"Phone pe gussa nahi karunga 📱",
+"Last chance 😤",
+"System hang ho raha hai itne No se 😭",
+"Ab toh Yes bol do warna main fir puchunga 😏",
+"Fine… but main fir bhi tumse pyaar karta hoon ❤️"
+];
+
 function noLove(){
 noCount++;
+
 var r=document.getElementById("response");
 r.style.display="block";
 
-if(noCount==1){
-r.innerHTML="Soch lo jaanu 😏";
-}
-else if(noCount==2){
-r.innerHTML="Pakka? 🥺";
-}
-else if(noCount==3){
-r.innerHTML="Please maan jao na 😭";
-}
-else{
-r.innerHTML="Theek hai... par main fir bhi tumse pyaar karta hoon ❤️";
+if(noCount <= messages.length){
+r.innerHTML = messages[noCount-1];
+}else{
+r.innerHTML = "Ab bas karo 😂 Yes dabao warna main infinite puchta rahunga 😏❤️";
 }
 
 moveNoButton();
+resizeButtons();
 }
 
-/* MOVE NO BUTTON INSIDE BOX */
+/* MOVE BUTTON */
 function moveNoButton(){
 var btn=document.getElementById("noBtn");
 var x=Math.random()*70;
@@ -169,7 +64,21 @@ btn.style.left=x+"%";
 btn.style.top=y+"px";
 }
 
-/* Floating hearts */
+/* MAKE YES BIGGER, NO SMALLER */
+function resizeButtons(){
+let yesBtn=document.querySelector("button");
+let noBtn=document.getElementById("noBtn");
+
+let yesSize=1 + (noCount*0.1);
+let noSize=1 - (noCount*0.05);
+
+if(noSize < 0.3) noSize=0.3;
+
+yesBtn.style.transform="scale("+yesSize+")";
+noBtn.style.transform="scale("+noSize+")";
+}
+
+/* FLOATING HEARTS */
 setInterval(()=>{
 let heart=document.createElement("div");
 heart.classList.add("heart");
@@ -181,6 +90,3 @@ setTimeout(()=>{heart.remove();},6000);
 },600);
 
 </script>
-
-</body>
-</html>
