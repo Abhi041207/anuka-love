@@ -1,260 +1,366 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For My Beautiful Anuka ❤️</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-
 <style>
-
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-font-family:'Poppins',sans-serif;
-background:#000;
-color:white;
-overflow:hidden;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family: 'Poppins', sans-serif;
 }
 
-.slider{
-height:100vh;
-overflow-y:scroll;
-scroll-snap-type:y mandatory;
+html,body{
+height:100%;
+overflow:hidden;
+background:black;
+color:white;
 scroll-behavior:smooth;
 }
 
-.slide{
+.container{
 height:100vh;
+overflow-y:scroll;
+scroll-snap-type:y mandatory;
+}
+
+.section{
+height:100vh;
+scroll-snap-align:start;
 display:flex;
-flex-direction:column;
 justify-content:center;
 align-items:center;
-scroll-snap-align:start;
-padding:20px;
-text-align:center;
-background:radial-gradient(circle at center,#1a001f,#000);
+flex-direction:column;
 position:relative;
+padding:20px;
 }
 
-h1{
-font-family:'Dancing Script',cursive;
-font-size:42px;
-color:#ff4da6;
-text-shadow:0 0 20px #ff1493;
-margin-bottom:20px;
+/* Background glow */
+body::before{
+content:"";
+position:fixed;
+width:100%;
+height:100%;
+background:radial-gradient(circle at center,#ff007f30,black 70%);
+z-index:-1;
 }
 
-.card{
-background:rgba(255,20,147,0.08);
-backdrop-filter:blur(12px);
-padding:25px;
-border-radius:25px;
-box-shadow:0 0 40px rgba(255,20,147,0.5);
-max-width:380px;
-}
-
-button{
-padding:12px 25px;
+/* Buttons */
+.btn{
+padding:14px 30px;
 border:none;
-border-radius:25px;
-background:linear-gradient(45deg,#ff1493,#ff4da6);
+border-radius:30px;
+background:linear-gradient(45deg,#ff0080,#ff4da6);
 color:white;
-font-weight:600;
+font-size:16px;
 margin:10px;
 cursor:pointer;
 transition:0.3s;
 }
-button:hover{transform:scale(1.1)}
 
+.btn:hover{
+transform:scale(1.1);
+}
+
+/* Card */
+.card{
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(15px);
+padding:30px;
+border-radius:25px;
+text-align:center;
+box-shadow:0 0 40px #ff007f70;
+max-width:90%;
+}
+
+/* Quiz */
+.option{
+margin:10px;
+padding:12px;
+border-radius:20px;
+background:#ff007f30;
+cursor:pointer;
+transition:0.3s;
+}
+
+.option:hover{
+background:#ff007f80;
+transform:scale(1.05);
+}
+
+/* Polaroid Gallery */
 .gallery{
 display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
-width:100%;
-max-width:380px;
-}
-.gallery img{
-width:100%;
-border-radius:15px;
-box-shadow:0 0 20px #ff1493;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
 }
 
-#noBtn{
-position:relative;
+.polaroid{
+background:white;
+color:black;
+padding:10px;
+border-radius:10px;
+transform:rotate(-2deg);
+transition:0.3s;
 }
 
+.polaroid:hover{
+transform:scale(1.1) rotate(0deg);
+}
+
+.polaroid img{
+width:100%;
+border-radius:8px;
+}
+
+/* Typewriter */
+.type{
+font-size:18px;
+max-width:80%;
+min-height:100px;
+}
+
+/* Fireworks canvas */
+canvas{
+position:absolute;
+top:0;
+left:0;
+}
+
+/* Video */
 video{
 width:90%;
 border-radius:20px;
-box-shadow:0 0 40px #ff1493;
+box-shadow:0 0 30px #ff0080;
 }
 
-canvas{
-position:fixed;
-top:0;
-left:0;
-pointer-events:none;
+/* Floating reel icons */
+.reel-icons{
+position:absolute;
+right:15px;
+bottom:120px;
+display:flex;
+flex-direction:column;
+gap:20px;
+font-size:22px;
+opacity:0.7;
 }
-
-.typing{
-min-height:80px;
-font-size:16px;
-}
-
 </style>
 </head>
+
 <body>
 
-<audio id="bgMusic" src="romantic.mp3.mp3" loop></audio>
+<div class="container">
 
-<div class="slider" id="slider">
-
-<!-- INTRO -->
-<div class="slide">
+<!-- 1 Intro -->
+<section class="section">
+<div class="card">
 <h1>For My Beautiful Anuka ❤️</h1>
+<p>Since 11 July 2024 • 4:50PM</p>
+<button class="btn" onclick="scrollNext()">Start ❤️</button>
+</div>
+</section>
+
+<!-- 2 Quiz -->
+<section class="section">
 <div class="card">
-<p>Since 11 July 2024, 4:50 PM 💖</p>
-<p id="timer"></p>
+<h2>Love Quiz 💕</h2>
+<p id="question"></p>
+<div id="options"></div>
+<p id="result"></p>
 </div>
-</div>
+</section>
 
-<!-- QUIZ -->
-<div class="slide">
-<h1>Love Quiz 💕</h1>
+<!-- 3 Gallery -->
+<section class="section">
 <div class="card">
-<p id="quizQ"></p>
-<div id="quizOptions"></div>
-</div>
-</div>
-
-<!-- LETTER -->
-<div class="slide">
-<h1>A Letter For You 💌</h1>
-<div class="card typing" id="letterText"></div>
-</div>
-
-<!-- GALLERY -->
-<div class="slide">
-<h1>Our Memories 📸</h1>
+<h2>Our Memories 📸</h2>
 <div class="gallery">
+<div class="polaroid">
 <img src="IMG_0067_Original.jpeg">
+<p>Sweet Smile</p>
+</div>
+<div class="polaroid">
 <img src="IMG_0668_Original.jpeg">
+<p>My Favorite</p>
+</div>
+<div class="polaroid">
 <img src="IMG_20241021_000544_Original.jpeg">
+<p>Forever</p>
+</div>
+<div class="polaroid">
 <img src="Screenshot_2024-11-01-01-39-41-08_1c337646f29875672b5a61192b9010f9_Original.jpeg">
+<p>Only Us</p>
 </div>
 </div>
+</div>
+</section>
 
-<!-- PROPOSAL -->
-<div class="slide">
-<h1>Will You Be My Valentine? 💍</h1>
-<button onclick="yesAnswer()">YES ❤️</button>
-<button id="noBtn" onclick="moveNo()">NO 😜</button>
+<!-- 4 Letter -->
+<section class="section">
+<div class="card">
+<h2>A Letter For You 💌</h2>
+<div class="type" id="letter"></div>
 </div>
+</section>
 
-<!-- VIDEO -->
-<div class="slide" id="videoSlide">
-<h1>You Are My Forever ❤️</h1>
-<video id="videoPlayer" playsinline>
+<!-- 5 Fireworks YES -->
+<section class="section">
+<canvas id="fireworks"></canvas>
+<div class="card">
+<h2>Will You Be My Valentine? ❤️</h2>
+<button class="btn" onclick="startFireworks()">YES 💕</button>
+</div>
+</section>
+
+<!-- 6 Secret Password -->
+<section class="section">
+<div class="card">
+<h2>Secret Surprise 🔐</h2>
+<input type="password" id="pass" placeholder="Enter Password" style="padding:10px;border-radius:20px;border:none;">
+<br>
+<button class="btn" onclick="unlock()">Unlock</button>
+<p id="secretMsg"></p>
+</div>
+</section>
+
+<!-- 7 Video -->
+<section class="section">
+<div class="card">
+<h2>Forever Us 🎥</h2>
+<video id="video" playsinline>
 <source src="HER.mp4" type="video/mp4">
 </video>
 </div>
 
+<div class="reel-icons">
+<span>❤️</span>
+<span>💬</span>
+<span>🔁</span>
 </div>
+</section>
 
-<canvas id="fireworks"></canvas>
+</div>
 
 <script>
 
-// MUSIC CONTROL
-const bgMusic=document.getElementById("bgMusic");
-document.body.addEventListener("click",()=>bgMusic.play(),{once:true});
-
-// TIMER
-function timer(){
-let start=new Date("July 11, 2024 16:50:00").getTime();
-let now=new Date().getTime();
-let diff=now-start;
-let days=Math.floor(diff/(1000*60*60*24));
-document.getElementById("timer").innerHTML=days+" days together ❤️";
+/* Scroll */
+function scrollNext(){
+document.querySelector(".container").scrollBy(0,window.innerHeight);
 }
-setInterval(timer,1000);
 
-// QUIZ
-const quiz=[
-{q:"Who loves more? 😜",a:["You","Me","Both 💕"],correct:2},
-{q:"Where is my forever? 💖",a:["Paris","In your heart","Mars"],correct:1}
+/* QUIZ */
+const quiz = [
+{
+q:"Where is my forever?",
+a:["Paris","In your heart","Mars"],
+c:1
+},
+{
+q:"Who loves you the most?",
+a:["Me","Random boy","Nobody"],
+c:0
+}
 ];
-let qIndex=0;
+
+let current=0;
+const qEl=document.getElementById("question");
+const optEl=document.getElementById("options");
+const resEl=document.getElementById("result");
+
 function loadQuiz(){
-let q=quiz[qIndex];
-document.getElementById("quizQ").innerHTML=q.q;
-let opt="";
-q.a.forEach((ans,i)=>{
-opt+=`<button onclick="checkAns(${i})">${ans}</button>`;
-});
-document.getElementById("quizOptions").innerHTML=opt;
+if(current>=quiz.length){
+resEl.innerText="You passed! ❤️";
+return;
 }
-function checkAns(i){
-if(i===quiz[qIndex].correct){
-qIndex++;
-if(qIndex<quiz.length){loadQuiz();}
-else{alert("You passed 😍")}
-}else{alert("Try again cutie 😘")}
+qEl.innerText=quiz[current].q;
+optEl.innerHTML="";
+quiz[current].a.forEach((opt,i)=>{
+let div=document.createElement("div");
+div.className="option";
+div.innerText=opt;
+div.onclick=()=>{
+if(i===quiz[current].c){
+resEl.innerText="Correct ❤️";
+current++;
+setTimeout(loadQuiz,800);
+}else{
+resEl.innerText="Wrong 😜 Try Again";
+}
+};
+optEl.appendChild(div);
+});
 }
 loadQuiz();
 
-// LETTER TYPING
-let text="From 11 July 2024 at 4:50 PM, my life changed forever. You are my peace, my happiness, my everything. No matter what happens, I choose you. Forever. Only You 💕";
+/* Typewriter */
+const text="From 11 July 2024 at 4:50PM my life changed forever. You are my happiness, my peace, my forever. No matter what happens, I choose you. Always.";
 let i=0;
-function typing(){
+function type(){
 if(i<text.length){
-document.getElementById("letterText").innerHTML+=text.charAt(i);
+document.getElementById("letter").innerHTML+=text.charAt(i);
 i++;
-setTimeout(typing,35);
+setTimeout(type,40);
 }
 }
-typing();
+type();
 
-// NO BUTTON SAFE MOVE
-function moveNo(){
-let btn=document.getElementById("noBtn");
-let x=Math.random()*200-100;
-let y=Math.random()*200-100;
-btn.style.transform=`translate(${x}px,${y}px)`;
-}
-
-// FIREWORKS PARTICLES
+/* Fireworks */
+function startFireworks(){
 const canvas=document.getElementById("fireworks");
 const ctx=canvas.getContext("2d");
 canvas.width=window.innerWidth;
 canvas.height=window.innerHeight;
-
-function yesAnswer(){
-for(let i=0;i<80;i++){
-let x=Math.random()*canvas.width;
-let y=Math.random()*canvas.height;
-ctx.fillStyle="pink";
+let particles=[];
+for(let i=0;i<200;i++){
+particles.push({
+x:canvas.width/2,
+y:canvas.height/2,
+angle:Math.random()*2*Math.PI,
+speed:Math.random()*5+2,
+alpha:1
+});
+}
+function animate(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+particles.forEach(p=>{
+p.x+=Math.cos(p.angle)*p.speed;
+p.y+=Math.sin(p.angle)*p.speed;
+p.alpha-=0.01;
+ctx.fillStyle="rgba(255,0,128,"+p.alpha+")";
 ctx.beginPath();
-ctx.arc(x,y,3,0,Math.PI*2);
+ctx.arc(p.x,p.y,3,0,2*Math.PI);
 ctx.fill();
+});
+requestAnimationFrame(animate);
 }
-alert("Forever Together ❤️");
+animate();
 }
 
-// VIDEO AUDIO CONTROL
-const slider=document.getElementById("slider");
-const video=document.getElementById("videoPlayer");
+/* Password */
+function unlock(){
+if(document.getElementById("pass").value==="11July"){
+document.getElementById("secretMsg").innerText="Unlocked ❤️ You are my forever.";
+}else{
+document.getElementById("secretMsg").innerText="Wrong password 😜";
+}
+}
 
-slider.addEventListener("scroll",()=>{
-let rect=document.getElementById("videoSlide").getBoundingClientRect();
-if(rect.top<300 && rect.bottom>300){
-bgMusic.pause();
+/* Video autoplay when visible */
+const video=document.getElementById("video");
+const observer=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
 video.play();
 }else{
 video.pause();
-bgMusic.play();
 }
 });
+});
+observer.observe(video);
 
 </script>
 
