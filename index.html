@@ -1,113 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For Anuka ❤️</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
 
 <style>
-body {
-    margin:0;
-    padding:0;
-    font-family:'Poppins', sans-serif;
-    background: linear-gradient(135deg,#120018,#3b003f);
-    color:white;
-    text-align:center;
-    overflow-x:hidden;
+body{
+margin:0;
+padding:0;
+font-family:'Poppins',sans-serif;
+background:linear-gradient(135deg,#120018,#3b003f);
+color:white;
+text-align:center;
+overflow-x:hidden;
 }
 
 /* Floating hearts */
-.heart {
-    position:fixed;
-    bottom:-10px;
-    color:#ff4da6;
-    animation: floatUp 8s linear infinite;
-    opacity:0.7;
+.heart{
+position:fixed;
+bottom:-10px;
+animation:floatUp 6s linear infinite;
 }
-@keyframes floatUp {
-    0% {transform:translateY(0) scale(1);}
-    100% {transform:translateY(-100vh) scale(1.5);}
+@keyframes floatUp{
+0%{transform:translateY(0);opacity:1;}
+100%{transform:translateY(-100vh);opacity:0;}
 }
 
-.container {
-    padding:50px 20px;
-    animation: fadeIn 2s ease-in;
+.container{
+padding:40px 20px;
 }
 
-@keyframes fadeIn {
-    from {opacity:0;}
-    to {opacity:1;}
+h1{
+font-family:'Great Vibes',cursive;
+font-size:55px;
+color:#ff4da6;
+text-shadow:0 0 25px #ff4da6;
 }
 
-h1 {
-    font-family:'Great Vibes', cursive;
-    font-size:60px;
-    color:#ff4da6;
-    text-shadow:0 0 20px #ff4da6;
+.longwish{
+max-width:600px;
+margin:20px auto;
+line-height:1.8;
+font-size:17px;
 }
 
-.message {
-    max-width:600px;
-    margin:20px auto;
-    font-size:18px;
-    line-height:1.7;
+img{
+width:90%;
+max-width:350px;
+border-radius:20px;
+box-shadow:0 0 25px #ff0080;
+margin-top:20px;
 }
 
-/* Image */
-.gallery img {
-    width:90%;
-    max-width:350px;
-    border-radius:20px;
-    box-shadow:0 0 25px #ff0080;
-    animation: zoom 6s infinite alternate ease-in-out;
+button{
+padding:12px 25px;
+border:none;
+border-radius:40px;
+margin:10px;
+font-size:16px;
+cursor:pointer;
+background:linear-gradient(45deg,#ff0080,#ff4da6);
+color:white;
+transition:0.3s;
 }
 
-@keyframes zoom {
-    from {transform:scale(1);}
-    to {transform:scale(1.05);}
+button:hover{
+transform:scale(1.1);
 }
 
-/* Buttons */
-button {
-    margin-top:20px;
-    padding:15px 30px;
-    border:none;
-    border-radius:40px;
-    background:linear-gradient(45deg,#ff0080,#ff4da6);
-    color:white;
-    font-size:16px;
-    cursor:pointer;
-    transition:0.3s;
+#noBtn{
+position:relative;
 }
 
-button:hover {
-    transform:scale(1.1);
+.hidden{
+display:none;
+font-size:22px;
+margin-top:20px;
+color:#ff4da6;
 }
 
-.hidden {
-    display:none;
-    margin-top:20px;
-    font-size:22px;
-    color:#ff4da6;
+.clock{
+margin-top:10px;
+font-size:18px;
 }
 
-/* Love Meter */
-.meter {
-    width:80%;
-    max-width:300px;
-    height:20px;
-    background:#333;
-    margin:20px auto;
-    border-radius:20px;
-    overflow:hidden;
+.loveMeter{
+width:80%;
+max-width:300px;
+height:20px;
+background:#333;
+margin:20px auto;
+border-radius:20px;
+overflow:hidden;
 }
-.fill {
-    height:100%;
-    width:0%;
-    background:linear-gradient(90deg,#ff0080,#ff4da6);
-    transition:1s;
+
+.fill{
+height:100%;
+width:0%;
+background:linear-gradient(90deg,#ff0080,#ff4da6);
+transition:1s;
 }
 </style>
 </head>
@@ -118,66 +112,118 @@ button:hover {
 
 <h1>For My Beautiful Anuka ❤️</h1>
 
-<p class="message">
-Anuka, you are the calm in my chaos,
-the smile that fixes my worst days,
-and the reason my heart feels full.
-<br><br>
-I don’t just like you… I choose you. Every single day.
+<div class="clock" id="clock"></div>
+
+<p class="longwish">
+Happy Valentine’s Day, Anuka ❤️  
+From the moment you came into my life, everything became softer, brighter and more meaningful.  
+You are my calm in chaos, my safe place, my smile after a long day, my reason to believe in love.  
+Every laugh we share, every memory we create, every little fight we survive —  
+it all makes us stronger.  
+
+I don’t just love you…  
+I choose you. Every single day.  
+And I promise to keep choosing you — today, tomorrow, always. 💍✨
 </p>
 
-<div class="gallery">
 <img src="IMG_0668_Original.jpeg">
-</div>
 
-<button onclick="showLove()">Click Here ❤️</button>
+<br>
 
-<div id="loveText" class="hidden">
-I Love You Forever, Anuka 💍✨
-</div>
+<button onclick="playMusic()">Play Our Song 🎵</button>
 
-<!-- Love Meter Game -->
-<h3>How much do you love me? 😏</h3>
-<div class="meter">
+<audio id="music" loop>
+<source src="romantic.mp3" type="audio/mp3">
+</audio>
+
+<h2>Will You Be My Valentine? 😏</h2>
+
+<button onclick="yesLove()">Yes ❤️</button>
+<button id="noBtn" onclick="noLove()">No 😒</button>
+
+<div id="response" class="hidden"></div>
+
+<h3>How Much Do You Love Me? 💘</h3>
+<div class="loveMeter">
 <div class="fill" id="fill"></div>
 </div>
-<button onclick="increaseLove()">Increase Love 💘</button>
-
-<!-- Music -->
-<button onclick="playMusic()">Play Romantic Music 🎵</button>
-<audio id="bgMusic" loop>
-<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
-</audio>
+<button onclick="increaseLove()">Increase Love 💖</button>
 
 </div>
 
 <script>
-function showLove(){
-    document.getElementById("loveText").style.display="block";
-}
 
-function increaseLove(){
-    let bar = document.getElementById("fill");
-    let currentWidth = parseInt(bar.style.width) || 0;
-    if(currentWidth < 100){
-        bar.style.width = (currentWidth + 20) + "%";
-    }
-}
-
-function playMusic(){
-    document.getElementById("bgMusic").play();
-}
-
-/* Floating hearts generator */
+/* Live Clock */
 setInterval(()=>{
-    let heart = document.createElement("div");
-    heart.classList.add("heart");
-    heart.innerHTML="❤️";
-    heart.style.left=Math.random()*100+"vw";
-    heart.style.fontSize=(Math.random()*20+20)+"px";
-    document.body.appendChild(heart);
-    setTimeout(()=>{heart.remove();},8000);
+document.getElementById("clock").innerText=
+"Current Time: "+ new Date().toLocaleTimeString();
+},1000);
+
+/* Music */
+function playMusic(){
+document.getElementById("music").play();
+}
+
+/* Yes Button */
+function yesLove(){
+document.getElementById("response").style.display="block";
+document.getElementById("response").innerHTML="YAYYY 🥰 I knew it! Forever starts now 💍❤️";
+}
+
+/* No Button Fun */
+let noCount=0;
+function noLove(){
+noCount++;
+let msg=document.getElementById("response");
+msg.style.display="block";
+
+if(noCount==1){
+msg.innerHTML="Soch lo jaanu 😏";
+}
+else if(noCount==2){
+msg.innerHTML="Pakka? 😭";
+}
+else if(noCount==3){
+msg.innerHTML="Please maan jao na 🥺";
+}
+else if(noCount==4){
+msg.innerHTML="Itna bhi attitude theek nahi 😤";
+}
+else{
+msg.innerHTML="Theek hai... par main fir bhi tumse pyaar karta hoon ❤️";
+}
+
+moveNoButton();
+}
+
+/* Move No Button */
+function moveNoButton(){
+let btn=document.getElementById("noBtn");
+btn.style.position="absolute";
+btn.style.left=Math.random()*80+"%";
+btn.style.top=Math.random()*80+"%";
+}
+
+/* Love Meter */
+function increaseLove(){
+let bar=document.getElementById("fill");
+let width=parseInt(bar.style.width)||0;
+if(width<100){
+bar.style.width=(width+20)+"%";
+}
+}
+
+/* Floating hearts */
+setInterval(()=>{
+let heart=document.createElement("div");
+heart.classList.add("heart");
+heart.innerHTML="❤️";
+heart.style.left=Math.random()*100+"vw";
+heart.style.fontSize=(Math.random()*20+20)+"px";
+document.body.appendChild(heart);
+setTimeout(()=>{heart.remove();},6000);
 },500);
+
 </script>
 
 </body>
