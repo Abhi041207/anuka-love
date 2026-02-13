@@ -11,73 +11,58 @@
 body{
 margin:0;
 font-family:'Poppins',sans-serif;
-background:linear-gradient(135deg,#14001f,#3b003f,#1a0028);
+background:linear-gradient(180deg,#120018,#2b0033,#14001f);
 color:white;
 text-align:center;
 overflow-x:hidden;
+scroll-behavior:smooth;
 }
 
-.container{
-padding:40px 20px 80px 20px;
-max-width:700px;
-margin:auto;
+.section{
+padding:60px 20px;
 }
 
-h1{
+h1,h2{
 font-family:'Great Vibes',cursive;
-font-size:55px;
 color:#ff4da6;
-animation:glow 2s infinite alternate;
+text-shadow:0 0 20px #ff0080;
 }
 
-@keyframes glow{
-from{text-shadow:0 0 10px #ff4da6;}
-to{text-shadow:0 0 25px #ff0080;}
-}
-
-.long-text{
-line-height:1.9;
+.counter{
 font-size:16px;
-margin-top:20px;
+margin-top:15px;
+line-height:1.8;
 }
 
-.photo-box{
-margin-top:30px;
-}
-
-.photo-box img{
+.photo img{
 width:90%;
-max-width:340px;
-border-radius:25px;
-box-shadow:0 0 25px #ff0080;
-animation:zoom 6s infinite alternate ease-in-out;
+max-width:350px;
+border-radius:20px;
+box-shadow:0 0 30px #ff0080;
+animation:zoom 6s infinite alternate;
 }
 
 @keyframes zoom{
 from{transform:scale(1);}
-to{transform:scale(1.06);}
+to{transform:scale(1.05);}
 }
 
 button{
 padding:12px 22px;
-margin:10px;
 border:none;
 border-radius:30px;
 background:linear-gradient(45deg,#ff0080,#ff4da6);
 color:white;
-font-size:15px;
+margin:8px;
 cursor:pointer;
 transition:0.3s;
 }
 
-button:hover{
-transform:scale(1.1);
-}
+button:hover{transform:scale(1.1);}
 
 .game-area{
 position:relative;
 height:170px;
-margin-top:25px;
 }
 
 #noBtn{
@@ -88,15 +73,13 @@ top:50px;
 
 #response{
 margin-top:20px;
-font-size:18px;
-color:#ff4da6;
-display:none;
 min-height:40px;
+color:#ff4da6;
 }
 
 .love-meter{
 width:85%;
-max-width:320px;
+max-width:300px;
 height:20px;
 background:#222;
 margin:20px auto;
@@ -111,7 +94,6 @@ background:linear-gradient(90deg,#ff0080,#ff4da6);
 transition:1s;
 }
 
-/* Floating hearts */
 .heart{
 position:fixed;
 bottom:-20px;
@@ -123,35 +105,37 @@ pointer-events:none;
 0%{transform:translateY(0);opacity:1;}
 100%{transform:translateY(-100vh);opacity:0;}
 }
+
+#heartGame{
+font-size:30px;
+cursor:pointer;
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="section">
 
 <h1>For My Beautiful Anuka ❤️</h1>
 
-<div class="long-text">
-Happy Valentine’s Day, Anuka ❤️<br><br>
-From the moment you came into my life, everything became brighter.  
-Your smile fixes my worst days. Your voice calms my storms.  
-Every memory with you feels special, every moment feels meaningful.  
-I don’t just love you — I choose you.  
-Today. Tomorrow. Always. 💍✨
-</div>
+<h2>Since We Became Us 💍</h2>
 
-<div class="photo-box">
+<div class="counter" id="counter"></div>
+
+<div class="photo">
 <img src="IMG_0668_Original.jpeg">
 </div>
 
-<br>
-
 <button onclick="playMusic()">Play Our Song 🎵</button>
-
 <audio id="music" loop>
 <source src="romantic.mp3.mp3" type="audio/mp3">
 </audio>
+
+</div>
+
+<div class="section">
 
 <h2>Will You Be My Valentine? 😏</h2>
 
@@ -162,7 +146,11 @@ Today. Tomorrow. Always. 💍✨
 
 <div id="response"></div>
 
-<h3>How Much Do You Love Me? 💘</h3>
+</div>
+
+<div class="section">
+
+<h2>Love Meter 💘</h2>
 
 <div class="love-meter">
 <div class="fill" id="fill"></div>
@@ -172,7 +160,32 @@ Today. Tomorrow. Always. 💍✨
 
 </div>
 
+<div class="section">
+
+<h2>Mini Game – Tap The Heart ❤️</h2>
+
+<div id="heartGame" onclick="heartScore()">❤️</div>
+<p>Score: <span id="score">0</span></p>
+
+</div>
+
 <script>
+
+/* TIME COUNTER */
+const startDate = new Date("July 11, 2024 16:50:00");
+
+setInterval(()=>{
+let now = new Date();
+let diff = now - startDate;
+
+let days = Math.floor(diff / (1000*60*60*24));
+let hours = Math.floor((diff / (1000*60*60)) % 24);
+let mins = Math.floor((diff / (1000*60)) % 60);
+let secs = Math.floor((diff / 1000) % 60);
+
+document.getElementById("counter").innerHTML =
+days+" days "+hours+" hours "+mins+" minutes "+secs+" seconds ❤️";
+},1000);
 
 /* MUSIC */
 function playMusic(){
@@ -181,67 +194,27 @@ document.getElementById("music").play();
 
 /* YES */
 function yesLove(){
-var r=document.getElementById("response");
-r.style.display="block";
-r.innerHTML="YAYYY 🥰 I knew it! Forever starts now 💍❤️";
+document.getElementById("response").innerHTML="YAYYY 🥰 Forever starts now 💍❤️";
 }
 
-/* NO SYSTEM */
+/* NO */
 let count=0;
-
-let messages=[
-"Soch lo jaanu 😏",
-"Pakka? 🥺",
-"Ek baar aur soch lo 😭",
-"Itna attitude theek nahi madam 😤",
-"Main ro dunga 😭",
-"Chocolate dunga 🍫",
-"Rose dunga 🌹",
-"Shopping karaunga 🛍️",
-"Movie date pakka 🎬",
-"Long drive bhi 🚗",
-"Good boy ban jaunga 😇",
-"Ladai nahi karunga 🤞",
-"Phone pe gussa nahi karunga 📱",
-"Ab toh haan bol do 🥺",
-"Tumhare bina Valentine adhura hai 😔",
-"System hang ho raha hai 😭",
-"Please maan jao 🥹",
-"Last chance 😤",
-"Fine… but I still love you ❤️"
-];
+let msgs=["Soch lo jaanu 😏","Pakka? 🥺","Chocolate dunga 🍫","Rose bhi 🌹","Last chance 😤","Still love you ❤️"];
 
 function noLove(){
 count++;
-var r=document.getElementById("response");
-r.style.display="block";
-
-if(count <= messages.length){
-r.innerHTML=messages[count-1];
+if(count <= msgs.length){
+document.getElementById("response").innerHTML=msgs[count-1];
 }else{
-r.innerHTML="Ab bas karo 😂 Yes dabao ❤️";
+document.getElementById("response").innerHTML="Ab bas karo 😂 Yes dabao ❤️";
 }
-
 moveNo();
-resizeButtons();
 }
 
 function moveNo(){
-var btn=document.getElementById("noBtn");
+let btn=document.getElementById("noBtn");
 btn.style.left=Math.random()*70+"%";
 btn.style.top=Math.random()*120+"px";
-}
-
-function resizeButtons(){
-let yes=document.getElementById("yesBtn");
-let no=document.getElementById("noBtn");
-
-let yesScale=1 + count*0.08;
-let noScale=1 - count*0.05;
-if(noScale < 0.4) noScale=0.4;
-
-yes.style.transform="scale("+yesScale+")";
-no.style.transform="scale("+noScale+")";
 }
 
 /* LOVE METER */
@@ -253,7 +226,14 @@ bar.style.width=(width+20)+"%";
 }
 }
 
-/* Floating Hearts */
+/* HEART GAME */
+let score=0;
+function heartScore(){
+score++;
+document.getElementById("score").innerText=score;
+}
+
+/* FLOATING HEARTS */
 setInterval(()=>{
 let heart=document.createElement("div");
 heart.classList.add("heart");
