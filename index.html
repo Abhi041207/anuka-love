@@ -12,67 +12,78 @@ body {
     margin:0;
     padding:0;
     font-family:'Poppins', sans-serif;
-    background: linear-gradient(135deg, #000000, #2b0033);
+    background: linear-gradient(135deg,#120018,#3b003f);
     color:white;
     text-align:center;
+    overflow-x:hidden;
+}
+
+/* Floating hearts */
+.heart {
+    position:fixed;
+    bottom:-10px;
+    color:#ff4da6;
+    animation: floatUp 8s linear infinite;
+    opacity:0.7;
+}
+@keyframes floatUp {
+    0% {transform:translateY(0) scale(1);}
+    100% {transform:translateY(-100vh) scale(1.5);}
 }
 
 .container {
-    padding:60px 20px;
+    padding:50px 20px;
+    animation: fadeIn 2s ease-in;
+}
+
+@keyframes fadeIn {
+    from {opacity:0;}
+    to {opacity:1;}
 }
 
 h1 {
     font-family:'Great Vibes', cursive;
-    font-size:55px;
+    font-size:60px;
     color:#ff4da6;
-    animation: glow 2s infinite alternate;
-}
-
-@keyframes glow {
-    from { text-shadow: 0 0 10px #ff4da6; }
-    to { text-shadow: 0 0 30px #ff1a8c; }
+    text-shadow:0 0 20px #ff4da6;
 }
 
 .message {
-    font-size:18px;
     max-width:600px;
     margin:20px auto;
+    font-size:18px;
     line-height:1.7;
 }
 
-/* Slideshow */
-.gallery {
-    margin-top:30px;
-}
-
+/* Image */
 .gallery img {
     width:90%;
     max-width:350px;
     border-radius:20px;
-    box-shadow:0 0 20px rgba(255,0,120,0.6);
-    display:none;
-    transition: opacity 1s ease-in-out;
+    box-shadow:0 0 25px #ff0080;
+    animation: zoom 6s infinite alternate ease-in-out;
 }
 
-.gallery img.active {
-    display:block;
+@keyframes zoom {
+    from {transform:scale(1);}
+    to {transform:scale(1.05);}
 }
 
+/* Buttons */
 button {
-    margin-top:30px;
-    padding:15px 35px;
-    font-size:18px;
+    margin-top:20px;
+    padding:15px 30px;
     border:none;
-    border-radius:50px;
-    background:#ff1a8c;
+    border-radius:40px;
+    background:linear-gradient(45deg,#ff0080,#ff4da6);
     color:white;
+    font-size:16px;
     cursor:pointer;
     transition:0.3s;
 }
 
 button:hover {
-    background:#ff4da6;
-    transform:scale(1.05);
+    transform:scale(1.1);
 }
 
 .hidden {
@@ -81,36 +92,62 @@ button:hover {
     font-size:22px;
     color:#ff4da6;
 }
+
+/* Love Meter */
+.meter {
+    width:80%;
+    max-width:300px;
+    height:20px;
+    background:#333;
+    margin:20px auto;
+    border-radius:20px;
+    overflow:hidden;
+}
+.fill {
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#ff0080,#ff4da6);
+    transition:1s;
+}
 </style>
 </head>
 
 <body>
 
 <div class="container">
-    <h1>For My Beautiful Anuka ❤️</h1>
 
-    <p class="message">
-        Anuka, you are the calm in my chaos,
-        the smile that fixes my worst days,
-        and the reason my heart feels full.
-        <br><br>
-        I don’t just like you…
-        I choose you. Every single day.
-    </p>
+<h1>For My Beautiful Anuka ❤️</h1>
 
-    <!-- Slideshow Section -->
-    <div class="gallery">
-        <img src="IMG_0668_Original.jpeg" class="slide active">
-        <img src="IMG_20241021_000544_Original.jpeg" class="slide">
-        <img src="Screenshot_2024-11-01-01-39-41-0.jpeg" class="slide">
-        <img src="IMG_0067_Original.jpeg" class="slide">
-    </div>
+<p class="message">
+Anuka, you are the calm in my chaos,
+the smile that fixes my worst days,
+and the reason my heart feels full.
+<br><br>
+I don’t just like you… I choose you. Every single day.
+</p>
 
-    <button onclick="showLove()">Click Here ❤️</button>
+<div class="gallery">
+<img src="IMG_0668_Original.jpeg">
+</div>
 
-    <div id="loveText" class="hidden">
-        I Love You Forever, Anuka 💍✨
-    </div>
+<button onclick="showLove()">Click Here ❤️</button>
+
+<div id="loveText" class="hidden">
+I Love You Forever, Anuka 💍✨
+</div>
+
+<!-- Love Meter Game -->
+<h3>How much do you love me? 😏</h3>
+<div class="meter">
+<div class="fill" id="fill"></div>
+</div>
+<button onclick="increaseLove()">Increase Love 💘</button>
+
+<!-- Music -->
+<button onclick="playMusic()">Play Romantic Music 🎵</button>
+<audio id="bgMusic" loop>
+<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
+</audio>
 
 </div>
 
@@ -119,14 +156,28 @@ function showLove(){
     document.getElementById("loveText").style.display="block";
 }
 
-let slides = document.querySelectorAll(".slide");
-let current = 0;
+function increaseLove(){
+    let bar = document.getElementById("fill");
+    let currentWidth = parseInt(bar.style.width) || 0;
+    if(currentWidth < 100){
+        bar.style.width = (currentWidth + 20) + "%";
+    }
+}
 
-setInterval(() => {
-    slides[current].classList.remove("active");
-    current = (current + 1) % slides.length;
-    slides[current].classList.add("active");
-}, 3000);
+function playMusic(){
+    document.getElementById("bgMusic").play();
+}
+
+/* Floating hearts generator */
+setInterval(()=>{
+    let heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML="❤️";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.fontSize=(Math.random()*20+20)+"px";
+    document.body.appendChild(heart);
+    setTimeout(()=>{heart.remove();},8000);
+},500);
 </script>
 
 </body>
