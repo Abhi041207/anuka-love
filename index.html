@@ -23,7 +23,7 @@ body {
 
 h1 {
     font-family:'Great Vibes', cursive;
-    font-size:60px;
+    font-size:55px;
     color:#ff4da6;
     animation: glow 2s infinite alternate;
 }
@@ -34,24 +34,32 @@ h1 {
 }
 
 .message {
-    font-size:20px;
+    font-size:18px;
     max-width:600px;
     margin:20px auto;
     line-height:1.7;
 }
 
-.heart {
-    font-size:40px;
-    animation: heartbeat 1s infinite;
+/* Slideshow */
+.gallery {
+    margin-top:30px;
 }
 
-@keyframes heartbeat {
-    0% { transform: scale(1); }
-    25% { transform: scale(1.2); }
-    40% { transform: scale(1); }
+.gallery img {
+    width:90%;
+    max-width:350px;
+    border-radius:20px;
+    box-shadow:0 0 20px rgba(255,0,120,0.6);
+    display:none;
+    transition: opacity 1s ease-in-out;
+}
+
+.gallery img.active {
+    display:block;
 }
 
 button {
+    margin-top:30px;
     padding:15px 35px;
     font-size:18px;
     border:none;
@@ -81,8 +89,6 @@ button:hover {
 <div class="container">
     <h1>For My Beautiful Anuka ❤️</h1>
 
-    <div class="heart">💖</div>
-
     <p class="message">
         Anuka, you are the calm in my chaos,
         the smile that fixes my worst days,
@@ -91,6 +97,14 @@ button:hover {
         I don’t just like you…
         I choose you. Every single day.
     </p>
+
+    <!-- Slideshow Section -->
+    <div class="gallery">
+        <img src="IMG_0668_Original.jpeg" class="slide active">
+        <img src="IMG_20241021_000544_Original.jpeg" class="slide">
+        <img src="Screenshot_2024-11-01-01-39-41-0.jpeg" class="slide">
+        <img src="IMG_0067_Original.jpeg" class="slide">
+    </div>
 
     <button onclick="showLove()">Click Here ❤️</button>
 
@@ -104,6 +118,15 @@ button:hover {
 function showLove(){
     document.getElementById("loveText").style.display="block";
 }
+
+let slides = document.querySelectorAll(".slide");
+let current = 0;
+
+setInterval(() => {
+    slides[current].classList.remove("active");
+    current = (current + 1) % slides.length;
+    slides[current].classList.add("active");
+}, 3000);
 </script>
 
 </body>
