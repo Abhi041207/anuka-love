@@ -8,63 +8,46 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
+
 html,body{
 height:100%;
 overflow:hidden;
 font-family:'Poppins',sans-serif;
-background:black;
+background:#000;
 color:white;
 }
 
-/* Background Image */
-body::before{
-content:"";
-position:fixed;
-width:100%;
-height:100%;
-background:url("Screenshot_2024-10-19-18-41-02-32_99c04817c0de5652397fc8b56c3b3_Original.jpeg") center/cover;
-opacity:0.25;
-z-index:-2;
+/* Soft Romantic Background */
+body{
+background:
+linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)),
+url("Screenshot_2024-10-19-18-41-02-32_99c04817c0de5652397fc8b56c3b3817_Original.jpeg");
+background-size:cover;
+background-position:center;
 }
 
-/* Neon glow layer */
-body::after{
-content:"";
-position:fixed;
-width:100%;
-height:100%;
-background:radial-gradient(circle,#ff0077 0%,transparent 60%);
-opacity:0.4;
-z-index:-1;
-animation:glow 6s infinite alternate;
-}
-@keyframes glow{
-from{filter:blur(40px);}
-to{filter:blur(70px);}
-}
-
-/* Slide system */
+/* Slide System */
 .container{
 height:100vh;
-transition:transform .8s cubic-bezier(.77,0,.175,1);
+transition:transform .7s ease;
 }
+
 .slide{
 height:100vh;
 display:flex;
+flex-direction:column;
 justify-content:center;
 align-items:center;
-flex-direction:column;
 padding:20px;
 text-align:center;
 }
 
-/* Glass Card */
+/* Card */
 .card{
-background:rgba(0,0,0,0.8);
-backdrop-filter:blur(20px);
+background:rgba(0,0,0,0.85);
 padding:30px;
-border-radius:30px;
-box-shadow:0 0 60px #ff0077;
+border-radius:25px;
+box-shadow:0 0 40px #ff0077;
 max-width:420px;
 width:100%;
 }
@@ -72,108 +55,86 @@ width:100%;
 /* Heading */
 h1{
 font-family:'Great Vibes',cursive;
-font-size:44px;
+font-size:40px;
 color:#ff66b3;
-text-shadow:0 0 30px #ff0077;
 margin-bottom:20px;
 }
 
 /* Buttons */
 button{
-padding:15px 30px;
+padding:14px 28px;
 border:none;
 border-radius:40px;
 margin:10px;
 background:linear-gradient(45deg,#ff0077,#ff66b3);
 color:white;
-font-size:18px;
+font-size:17px;
 cursor:pointer;
 transition:.3s;
-box-shadow:0 0 25px #ff0077;
 }
-button:hover{transform:scale(1.1);}
 
+button:hover{
+transform:scale(1.1);
+}
+
+/* Gallery */
 .gallery{
 display:grid;
 grid-template-columns:repeat(2,1fr);
-gap:12px;
-margin-top:20px;
+gap:15px;
+max-width:400px;
+width:100%;
 }
+
 .gallery img{
 width:100%;
-border-radius:20px;
-box-shadow:0 0 30px #ff0077;
+border-radius:15px;
+box-shadow:0 0 15px #ff0077;
 }
 
-/* Cute floating hearts */
-.heart{
-position:fixed;
-bottom:-20px;
-font-size:20px;
-animation:float 6s linear infinite;
-}
-@keyframes float{
-to{transform:translateY(-110vh) rotate(360deg);}
-}
-
-/* Fireworks */
-canvas{
-position:fixed;
-top:0;
-left:0;
-pointer-events:none;
-}
-
+/* Video */
 video{
 width:90%;
 border-radius:20px;
-box-shadow:0 0 50px #ff0077;
+box-shadow:0 0 40px #ff0077;
 }
+
+/* Counter */
 .counter{
 margin-top:20px;
 font-size:18px;
 color:#ff99cc;
 }
+
 </style>
 </head>
 
 <body>
 
 <audio id="bgMusic" src="romantic.mp3" loop></audio>
-<canvas id="canvas"></canvas>
 
 <div class="container" id="container">
 
-<!-- Slide 1 -->
+<!-- 0 Slide -->
 <div class="slide">
 <div class="card">
 <h1>Will You Be My Valentine? ❤️</h1>
-<button id="yesBtn" onclick="yesClick()">YES 💕</button>
-<button id="noBtn" onclick="noClick()">NO 😏</button>
-<p id="noMsg"></p>
+<button onclick="goNext()">YES 💕</button>
+<button onclick="noClick()" id="noBtn">NO 😏</button>
+<p id="noText"></p>
 </div>
 </div>
 
-<!-- Slide 2 Quiz -->
-<div class="slide">
-<div class="card">
-<h1>Love Quiz 💖</h1>
-<p id="question"></p>
-<div id="options"></div>
-<p id="quizMsg"></p>
-</div>
-</div>
-
-<!-- Slide 3 Letter -->
+<!-- 1 Slide Letter -->
 <div class="slide">
 <div class="card">
 <h1>A Letter For You 💌</h1>
 <p id="letter"></p>
-<button onclick="nextSlide()">Next 💖</button>
+<button onclick="goNext()">Next 💖</button>
 </div>
 </div>
 
-<!-- Slide 4 Album -->
+<!-- 2 Slide Album -->
 <div class="slide">
 <h1>Our Memories 📸</h1>
 <div class="gallery">
@@ -182,17 +143,17 @@ color:#ff99cc;
 <img src="IMG_20241021_000544_Original.jpeg">
 <img src="IMG_0067_Original.jpeg">
 </div>
-<button onclick="nextSlide()">Next ❤️</button>
+<button onclick="goNext()">Next 💕</button>
 </div>
 
-<!-- Slide 5 Video -->
+<!-- 3 Slide Video -->
 <div class="slide">
 <h1>You Are My Forever 💞</h1>
-<video id="vid" src="HER.mp4" controls></video>
-<button onclick="nextSlide()">Next 💕</button>
+<video id="video" src="HER.mp4" controls></video>
+<button onclick="goNext()">Next ❤️</button>
 </div>
 
-<!-- Slide 6 Final -->
+<!-- 4 Slide Final -->
 <div class="slide">
 <div class="card">
 <h1>Forever Us 💍</h1>
@@ -205,95 +166,58 @@ color:#ff99cc;
 
 <script>
 
-/* Music */
-document.body.addEventListener("click",()=>{
-document.getElementById("bgMusic").play().catch(()=>{});
-},{once:true});
-
 /* Slide Control */
 let current=0;
-function nextSlide(){
-if(current<5){
+const container=document.getElementById("container");
+const video=document.getElementById("video");
+const bgMusic=document.getElementById("bgMusic");
+
+function goNext(){
+if(current < 4){
 current++;
-document.getElementById("container")
-.style.transform=`translateY(-${current*100}vh)`;
+container.style.transform=`translateY(-${current*100}vh)`;
+}
+
+/* Stop music on video slide */
+if(current === 3){
+bgMusic.pause();
+video.play().catch(()=>{});
 }
 }
 
-/* YES/NO logic */
+/* Background music iPhone fix */
+document.body.addEventListener("click",()=>{
+bgMusic.play().catch(()=>{});
+},{once:true});
+
+/* NO Button Funny */
 let noCount=0;
-let yesScale=1;
-
-function yesClick(){
-launchFireworks();
-nextSlide();
-}
-
 function noClick(){
-noCount++;
-yesScale+=0.2;
-yesBtn.style.transform=`scale(${yesScale})`;
-noBtn.style.position="relative";
-noBtn.style.left=(Math.random()*100-50)+"px";
-if(noCount>=10){noBtn.style.display="none";}
-document.getElementById("noMsg").innerText=
-["Are you sure? 🥺",
+const replies=[
+"Are you sure? 🥺",
 "Think again 😏",
 "Bas YES dabao ❤️",
 "Main ro dunga 🥹",
-"Tum YES hi karogi 😎"][noCount%5];
-}
-
-/* Quiz System */
-const quiz=[
-{
-q:"Where is my forever?",
-a:["In your heart 💕","Paris","Mars"],
-correct:0
-},
-{
-q:"Who loves you most?",
-a:["Me ❤️","Your dog 🐶","Nobody 😏"],
-correct:0
-}
+"Tum YES hi karogi 😎"
 ];
-
-let quizIndex=0;
-function loadQuiz(){
-document.getElementById("question").innerText=quiz[quizIndex].q;
-let html="";
-quiz[quizIndex].a.forEach((opt,i)=>{
-html+=`<button onclick="check(${i})">${opt}</button>`;
-});
-document.getElementById("options").innerHTML=html;
-}
-loadQuiz();
-
-function check(i){
-if(i===quiz[quizIndex].correct){
-quizIndex++;
-if(quizIndex<quiz.length){
-loadQuiz();
-}else{
-setTimeout(nextSlide,800);
-}
-}else{
-document.getElementById("quizMsg").innerText="Wrong 😜 Try again!";
-}
+document.getElementById("noText").innerText =
+replies[noCount % replies.length];
+noCount++;
 }
 
 /* Letter typing */
-const letterText=`From 11 July 2024 at 4:50 PM 💕
+const text=`From 11 July 2024 at 4:50 PM 💕
 My life changed forever.
-You are my peace, my happiness, my forever.
-I choose you every single day ❤️`;
+You are my happiness,
+my peace, my forever.
+I choose you everyday ❤️`;
 
 let i=0;
 function type(){
-if(i<letterText.length){
-document.getElementById("letter").innerHTML+=letterText[i];
+if(i < text.length){
+document.getElementById("letter").innerHTML += text[i];
 i++;
-setTimeout(type,30);
+setTimeout(type,35);
 }
 }
 setTimeout(type,800);
@@ -301,43 +225,15 @@ setTimeout(type,800);
 /* Love Counter */
 const start=new Date("July 11, 2024 16:50:00");
 function update(){
-let diff=new Date()-start;
+let diff=new Date() - start;
 let d=Math.floor(diff/86400000);
 let h=Math.floor(diff/3600000)%24;
 let m=Math.floor(diff/60000)%60;
 let s=Math.floor(diff/1000)%60;
-document.getElementById("counter").innerHTML=
+document.getElementById("counter").innerHTML =
 `${d} days ${h} hrs ${m} mins ${s} secs ❤️`;
 }
 setInterval(update,1000);
-
-/* Floating hearts */
-for(let i=0;i<25;i++){
-let heart=document.createElement("div");
-heart.className="heart";
-heart.innerHTML="💖";
-heart.style.left=Math.random()*100+"%";
-heart.style.animationDuration=(5+Math.random()*5)+"s";
-document.body.appendChild(heart);
-}
-
-/* Fireworks */
-const canvas=document.getElementById("canvas");
-const ctx=canvas.getContext("2d");
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-
-function launchFireworks(){
-for(let i=0;i<100;i++){
-let x=canvas.width/2;
-let y=canvas.height/2;
-ctx.beginPath();
-ctx.arc(x+Math.random()*200-100,y+Math.random()*200-100,3,0,Math.PI*2);
-ctx.fillStyle="#ff66b3";
-ctx.fill();
-}
-setTimeout(()=>ctx.clearRect(0,0,canvas.width,canvas.height),1000);
-}
 
 </script>
 
