@@ -10,32 +10,15 @@
 
 html,body{
 height:100%;
-overflow-y:scroll;
-scroll-snap-type:y mandatory;
+overflow:hidden;
 background:#000;
 color:white;
 }
 
-/* BACKGROUND IMAGE */
-body::before{
-content:"";
-position:fixed;
-top:0;left:0;
+.container{
+height:100vh;
 width:100%;
-height:100%;
-background:url('Screenshot_2024-10-19-18-41-02-32_99c04817c0de5652397fc8b56c3b3817_Original.jpeg') center/cover no-repeat;
-opacity:0.35;
-z-index:-2;
-}
-
-body::after{
-content:"";
-position:fixed;
-top:0;left:0;
-width:100%;
-height:100%;
-background:linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0.9));
-z-index:-1;
+transition:transform 0.6s ease;
 }
 
 .slide{
@@ -44,21 +27,43 @@ display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
-scroll-snap-align:start;
 padding:20px;
 text-align:center;
+position:relative;
+}
+
+/* BACKGROUND IMAGE FIXED */
+.slide::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:url("Screenshot_2024-10-19-18-41-02-32_99c04817c0de5652397fc8b56c3b3817_Original.jpeg") center/cover no-repeat;
+opacity:0.35;
+z-index:-2;
+}
+
+.slide::after{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+z-index:-1;
 }
 
 .card{
-background:rgba(0,0,0,0.75);
+background:rgba(0,0,0,0.8);
 padding:25px;
 border-radius:25px;
-box-shadow:0 0 40px #ff0080;
+box-shadow:0 0 30px #ff0080;
 max-width:420px;
 width:95%;
 }
-
-h1{margin-bottom:20px;}
 
 button{
 background:linear-gradient(45deg,#ff0080,#ff4da6);
@@ -73,56 +78,48 @@ transition:0.3s;
 min-width:120px;
 }
 
-button:hover{
-transform:scale(1.1);
-}
+button:hover{transform:scale(1.1);}
 
 #funnyText{
 margin-top:10px;
 color:#ff99cc;
 font-weight:bold;
+min-height:25px;
 }
 
-input{
-padding:12px;
-border-radius:20px;
-border:none;
-margin:10px;
-width:85%;
+/* Gallery */
+.gallery{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
+margin-top:20px;
 }
 
+.gallery img{
+width:100%;
+border-radius:15px;
+box-shadow:0 0 15px #ff0080;
+}
+
+/* Video */
 video{
 width:100%;
 border-radius:20px;
 box-shadow:0 0 30px #ff0080;
 }
 
-/* Floating Cute Animals */
-.float{
-position:fixed;
-font-size:24px;
-animation:floatUp linear infinite;
-opacity:0.8;
-}
-
-@keyframes floatUp{
-0%{transform:translateY(100vh);}
-100%{transform:translateY(-10vh);}
-}
-
-/* FIREWORKS */
 canvas{
-position:fixed;
+position:absolute;
 top:0;
 left:0;
 pointer-events:none;
-z-index:999;
+z-index:1;
 }
 </style>
 </head>
 <body>
 
-<canvas id="fireworks"></canvas>
+<div class="container" id="container">
 
 <!-- SLIDE 1 -->
 <div class="slide">
@@ -132,49 +129,99 @@ z-index:999;
 <button onclick="noClick()">NO 😏</button>
 <p id="funnyText"></p>
 </div>
+<canvas id="fireworks"></canvas>
 </div>
 
-<!-- SLIDE 2 -->
+<!-- SLIDE 2 SECRET -->
 <div class="slide">
 <div class="card">
-<h1>Secret Surprise 🔐</h1>
+<h2>Secret Surprise 🔐</h2>
 <p><b>Hint:</b> What is first nickname you gave me?</p>
-<input id="passInput" placeholder="Enter Password">
+<input id="passInput" placeholder="Enter Password" style="padding:10px;border-radius:15px;border:none;margin:10px;width:85%;">
 <br>
 <button onclick="unlock()">Unlock</button>
 <p id="wrongPass"></p>
 </div>
 </div>
 
-<!-- SLIDE 3 VIDEO -->
+<!-- SLIDE 3 GALLERY -->
 <div class="slide">
 <div class="card">
-<h1>You Are My Forever 💎❤️</h1>
+<h2>Our Memories ❤️</h2>
+<div class="gallery">
+<img src="IMG_0067_Original.jpeg">
+<img src="IMG_0668_Original.jpeg">
+<img src="IMG_20241021_000544_Original.jpeg">
+<img src="Screenshot_2024-11-01-01-39-41-08_1c337646f29875672b5a61192b9010f9_Original.jpeg">
+</div>
+<br>
+<button onclick="nextSlide()">Next 💎</button>
+</div>
+</div>
+
+<!-- SLIDE 4 VIDEO -->
+<div class="slide">
+<div class="card">
+<h2>You Are My Forever ❤️</h2>
 <video id="herVideo" src="HER.mp4" controls></video>
 </div>
 </div>
 
+</div>
+
 <script>
 
-/* NO BUTTON FUNNY */
-let noCount=0;
-function noClick(){
-noCount++;
-let replies=[
-"Sochlo jaanu 😏",
-"Arey firse NO? 😒",
-"Pls maan jao 🥺",
-"Last chance 😭",
-"System crash ho jayega 😂",
-"Bas ab YES hi dabao ❤️"
-];
-document.getElementById("funnyText").innerText=
-replies[Math.min(noCount,replies.length-1)];
+let current=0;
+function nextSlide(){
+current++;
+document.getElementById("container").style.transform="translateY(-"+(current*100)+"vh)";
 }
 
-/* YES FIREWORKS */
 function yesClick(){
 startFireworks();
+setTimeout(()=>{
+nextSlide();
+},2000);
+}
+
+/* 50 FUNNY REPLIES */
+let replies=[
+"Sochlo jaanu 😏","Arey firse NO? 😒","Pls maan jao 🥺","Last chance 😭",
+"System crash ho jayega 😂","Bas ab YES hi dabao ❤️","Drama queen 😂",
+"Ab kya karu main 😭","Dil tod diya 💔","Ye cheating hai 😤",
+"Bhagwan sab dekh raha hai 👀","NO allowed nahi 😏",
+"YES hi option hai 😌","Server overload 😂","Mat satao mujhe 🥺",
+"Main ro dunga 😭","Zyada attitude aa raha hai 😤",
+"Final warning ⚠️","System hang ho gaya 😂",
+"Acha chalo maan jao ❤️","Kitna tadpaogi 😭",
+"YES button glow ho raha dekho 😏","NO disable kar deta hu 😎",
+"Aapka jawab galat hai 😂","Retry karo 😏",
+"Love test fail ho raha 😭","System update needed 😂",
+"Wrong answer 😂","Dil dukha diya 💔",
+"Ab toh haan bol do ❤️","No se kya milega 😒",
+"YES mein hi happiness hai 😏",
+"Arey meri jaan 🥺","Itna bhi mat satao 😭",
+"Ye cheating hai 😤","Bas ek YES chahiye ❤️",
+"Drama mat karo 😂","Dil pe mat lo 💔",
+"Aur kitna test logi 😭",
+"NO ka tax lagega 😂",
+"Arey plssss ❤️",
+"Main serious ho raha hu 😏",
+"Bas ab ho gaya 😂",
+"Chalo maan jao 🥺",
+"Ye unfair hai 😭",
+"NO se kuch nahi hoga 😏",
+"YES dabao warna main aa raha 😂",
+"Last last chance 😭",
+"Ab toh pakka YES ❤️"
+];
+
+let noCount=0;
+function noClick(){
+if(noCount<replies.length){
+document.getElementById("funnyText").innerText=replies[noCount];
+noCount++;
+}
 }
 
 /* PASSWORD SYSTEM */
@@ -189,33 +236,31 @@ let valid2="misteridiothero";
 if(input===valid1 || input===valid2){
 document.getElementById("wrongPass").innerText="Unlocked ❤️";
 setTimeout(()=>{
-document.querySelectorAll(".slide")[2].scrollIntoView();
-let vid=document.getElementById("herVideo");
-vid.play();
-},800);
+nextSlide();
+},1000);
 }else{
 document.getElementById("wrongPass").innerText="Wrong password 😭";
 }
 }
 
-/* FIREWORKS */
+/* FIREWORKS FIXED */
 const canvas=document.getElementById("fireworks");
 const ctx=canvas.getContext("2d");
 canvas.width=window.innerWidth;
 canvas.height=window.innerHeight;
 
 function startFireworks(){
-for(let i=0;i<40;i++){
-setTimeout(()=>burst(),i*100);
+for(let i=0;i<10;i++){
+setTimeout(()=>burst(),i*200);
 }
 }
 
 function burst(){
 let x=Math.random()*canvas.width;
 let y=Math.random()*canvas.height/2;
-for(let i=0;i<25;i++){
+for(let i=0;i<20;i++){
 let angle=Math.random()*2*Math.PI;
-let speed=Math.random()*4+2;
+let speed=Math.random()*3+2;
 particle(x,y,Math.cos(angle)*speed,Math.sin(angle)*speed);
 }
 }
@@ -223,8 +268,9 @@ particle(x,y,Math.cos(angle)*speed,Math.sin(angle)*speed);
 function particle(x,y,dx,dy){
 let life=40;
 function draw(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
 ctx.beginPath();
-ctx.arc(x,y,2,0,Math.PI*2);
+ctx.arc(x,y,3,0,Math.PI*2);
 ctx.fillStyle="#ff4da6";
 ctx.fill();
 x+=dx;
@@ -235,16 +281,7 @@ if(life>0)requestAnimationFrame(draw);
 draw();
 }
 
-/* FLOATING ANIMALS */
-for(let i=0;i<25;i++){
-let e=document.createElement("div");
-e.className="float";
-e.innerText=["🐻","🐰","🐼","❤️"][Math.floor(Math.random()*4)];
-e.style.left=Math.random()*100+"vw";
-e.style.animationDuration=(5+Math.random()*5)+"s";
-document.body.appendChild(e);
-}
-
 </script>
+
 </body>
 </html>
